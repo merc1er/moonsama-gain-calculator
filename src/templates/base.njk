@@ -18,10 +18,16 @@
 
   {% block body %}{% endblock %}
 
+  <div x-data="{ count: 0 }">
+    <button x-on:click="count++">Increment</button>
+ 
+    <span x-text="count"></span>
+  </div>
+
   <footer class="mt-10"></footer>
 
   <!-- JavaScript -->
-  <script src="/static/js/scripts.js"></script>
+  <script src="/static/js/app.js"></script>
 
 </body>
 </html>
