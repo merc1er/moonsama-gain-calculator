@@ -1,7 +1,10 @@
 {% extends "base.njk" %}
 
 {% block body %}
-<section class="w-full px-8" x-data="{ username: '', resources: '', openTab: 1, showResults: false }">
+<section
+  class="w-full px-8"
+  x-data="{ username: '', resources: '', openTab: 1, showResults: false, load: false }"
+>
   <div class="max-w-5xl mx-auto">
 
     <!-- Title -->
@@ -31,7 +34,7 @@
       <div class="card-form">
         <div class="w-full pt-4">
           <!-- By User Tab -->
-          <div class="" x-show="openTab === 1">
+          <div x-show="openTab === 1">
 
             <h3 class="mb-6 text-2xl font-medium text-center">Input your username</h3>
 
@@ -48,12 +51,15 @@
               <button
                 class="w-full px-3 py-4 font-medium text-white bg-blue-600 rounded-lg"
                 x-on:click="
+                  load = true
                   response = await fetch('https://mcapi.moonsama.com/game/minecraft-carnage-2022-04-17/carnage-stats/result/final?player=' + username)
                   resources = await response.json()
                   showResults = true
+                  load = false
                 "
               >
-                Calculate
+                <span x-show="!load">Calculate</span>
+                <span x-show="load">{% include "icons/loader.svg" %}</span>
               </button>
             </div>
 
