@@ -32,10 +32,17 @@
         <div class="w-full pt-4">
           <!-- By User Tab -->
           <div class="" x-show="openTab === 1">
+
             <h3 class="mb-6 text-2xl font-medium text-center">Input your username</h3>
 
-            <!-- username -->
-            <input type="text" x-model="username" autocorrect="off" autocapitalize="off" spellcheck="false" name="username" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Minecraft username">
+            <!-- Username input -->
+            <div class="mb-4">
+              <input type="text" x-model="username" autocorrect="off" autocapitalize="off" spellcheck="false" name="username" class="input" placeholder="Minecraft username">
+
+              <div x-show="showResults && !resources.player">
+                <div class="text-center text-red-700">User not found</div>
+              </div>
+            </div>
 
             <div class="block">
               <button
@@ -50,7 +57,7 @@
               </button>
             </div>
 
-            <div x-show="showResults">
+            <div x-show="showResults && resources.player">
               <!-- <ul x-for="resource in resources">
                 <li x-text="resource"></li>
               </ul> -->
@@ -61,6 +68,7 @@
               <div x-text="`Grain 🌾: ${resources.grain}`"></div>
               <div x-text="`Gold 🥇: ${resources.gold}`"></div>
             </div>
+
           </div>
           <!-- End By User Tab -->
 

@@ -4,6 +4,11 @@
 
 
 .card-form {
-	@apply relative z-10 h-auto overflow-hidden bg-gray-200 rounded-b-lg
-	shadow-2xl px-7 text-black pb-6;
+  @apply relative z-10 h-auto overflow-hidden bg-gray-200 rounded-b-lg
+  shadow-2xl px-7 text-black pb-6;
+}
+
+.input {
+  @apply block w-full bg-gray-100 px-4 py-3 border border-2 border-transparent
+  border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none
 }
