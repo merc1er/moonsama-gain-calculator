@@ -54,7 +54,7 @@ async function getMaterialMovr(tokenId){
     askPerUnitDenominator
   }
 }`
-  
+
   const fetchUrl = "https://moonriver-subgraph.moonsama.com/subgraphs/name/moonsama/marketplacev4"
   const response = await fetch(fetchUrl, {
     method: 'POST',
@@ -69,7 +69,7 @@ async function getMaterialMovr(tokenId){
     body: JSON.stringify({query: graphqlQuery})
   });
   const responseJson = await response.json()
-  const prices = responseJson.data.orders.map(order => order.askPerUnitNominator/order.askPerUnitDenominator).sort((a, b) => a-b)    
+  const prices = responseJson.data.orders.map(order => order.askPerUnitNominator/order.askPerUnitDenominator).sort((a, b) => a-b)
   const lowestPrice = prices.shift()
   return lowestPrice
 }
