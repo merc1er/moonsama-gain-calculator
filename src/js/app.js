@@ -83,4 +83,26 @@ async function getMaterialMovr(tokenId){
   return lowestPrice
 }
 
+
+/**
+ * Returns the total USD value of all resources
+ * @param {Dict} resources
+ * @param {Dict} prices
+ * @param {Float} price of MOVR token in USD: movrPrice
+ * @returns {Float}
+ */
+async function getTotalUSD(resources, prices, movrPrice){
+  const woodValue = resources.wood * prices.wood * movrPrice
+  const stoneValue = resources.stone * prices.stone * movrPrice
+  const ironValue = resources.iron * prices.iron * movrPrice
+  const expValue = resources.exp * prices.exp * movrPrice
+  const grainValue = resources.grain * prices.grain * movrPrice
+  const goldValue = resources.gold * prices.gold * movrPrice
+
+  const total = woodValue + stoneValue + ironValue + expValue + grainValue + goldValue
+  return total.toFixed(2)
+}
+
+
 window.getAllMaterialsMovr = getAllMaterialsMovr
+window.getTotalUSD = getTotalUSD

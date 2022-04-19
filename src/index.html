@@ -3,7 +3,7 @@
 {% block body %}
 <section
   class="w-full px-8"
-  x-data="{ username: '', resources: '', openTab: 1, showResults: false, load: false, prices: '' }"
+  x-data="{ username: '', resources: '', openTab: 1, showResults: false, load: false, prices: '', totalUSD: 0 }"
 >
   <div class="max-w-5xl mx-auto">
 
@@ -57,6 +57,7 @@
                   resources = await response.json()
                   if (resources.player){
                     prices = await getAllMaterialsMovr()
+                    totalUSD = await getTotalUSD(resources, prices, movrPrice)
                     showResults = true
                   }
                   load = false
@@ -67,7 +68,7 @@
               </button>
             </div>
 
-            <div x-show="showResults && resources.player">
+            <div x-show="showResults && resources.player" class="mt-2">
               <!-- <ul x-for="resource in resources">
                 <li x-text="resource"></li>
               </ul> -->
@@ -77,6 +78,7 @@
               <div x-text="`Exp 🟢: $${resources.exp * prices.exp * movrPrice}`"></div>
               <div x-text="`Grain 🌾: $${resources.grain * prices.grain * movrPrice}`"></div>
               <div x-text="`Gold 🥇: $${resources.gold * prices.gold * movrPrice}`"></div>
+              <div class="mt-2" x-text="`Total: $${totalUSD}`"></div>
             </div>
 
           </div>
