@@ -13,8 +13,19 @@
 
     <div class="w-full sm:w-96 mx-auto">
       <div class="relative z-10 h-auto p-8 py-10 overflow-hidden bg-gray-200 border-b-2 border-gray-300 rounded-lg shadow-2xl px-7 text-black">
-
-        <div class="">
+       
+        <div x-data="{ openTab: 1 }" class="p-6">
+          <ul class="flex border-b">
+            <li @click="openTab = 1" class="-mb-px mr-1">
+              <a class="border border-black rounded-t-lg px-4" :class="openTab === 1 ? 'bg-white text-blue-700': 'bg-blue-700 text-white'" href="#">Tab 1</a>
+            </li>
+            <li @click="openTab = 2" class="mr-1">
+              <a class="border border-black rounded-t-lg px-4" :class="openTab === 2 ? 'bg-white text-blue-700': 'bg-blue-700 text-white'" href="#">Tab 2</a>
+            </li>
+          </ul>
+          <div class="w-full pt-4">
+        <!-- By User Tab -->
+        <div class="" x-show="openTab === 1">
           <h3 class="mb-6 text-2xl font-medium text-center">Input your username</h3>
 
           <!-- username -->
@@ -29,19 +40,38 @@
             </button>
           </div>
         </div>
+        <!-- End By User Tab -->
 
-        <!-- <div
-          x-data="{ resources: '' }"
-          x-init="
-            resources = await (await fetch('https://mcapi.moonsama.com/game/minecraft-carnage-2022-04-17/carnage-stats/result/final?player=merc1er')).json()
-          "
-        >
-          <div x-text="`Player: ${resources.player}`"></div>
-        </div> -->
+        <!-- By Resources Tab -->
+        <div class="" x-show="openTab === 2">
+          <h3 class="mb-6 text-2xl font-medium text-center">Input your resources</h3>
+          <!-- wood -->
+          <input type="number" name="wood" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Wood 🪵">
 
+          <!-- stone -->
+          <input type="number" name="stone" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Stone 🪨">
+
+          <!-- iron -->
+          <input type="number" name="iron" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Iron 🪙">
+
+          <!-- exp -->
+          <input type="number" name="exp" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Exp 🟢">
+
+          <!-- grain -->
+          <input type="number" name="grain" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Grain 🌾">
+
+          <!-- gold -->
+          <input type="number" name="gold" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Gold 🥇">
+
+          <div class="block">
+            <button class="w-full px-3 py-4 font-medium text-white bg-blue-600 rounded-lg">Calculate</button>
+          </div>
+        </div>
+        <!-- End By Resources Tab -->
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
 </section>
 {% endblock %}
