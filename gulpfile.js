@@ -14,7 +14,7 @@ const gulp         = require('gulp'),
       cleanCSS     = require('gulp-clean-css'),
       // JavaScript
       terser       = require('gulp-terser'),
-      babel        = require('gulp-babel');
+      webpack      = require('webpack-stream');
       // BrowserSync
       browserSync  = require('browser-sync'),
       reload       = browserSync.reload;
@@ -105,9 +105,7 @@ gulp.task('css-dev', function() {
 // Bundle and minify JavaScript
 gulp.task('js', () =>
   gulp.src('src/js/app.js')
-    .pipe(babel({
-      presets: ['@babel/preset-env']
-    }))
+    .pipe(webpack())
     .pipe(gulp.dest('dist/static/js/'))
 );
 
