@@ -14,7 +14,7 @@ const gulp         = require('gulp'),
       cleanCSS     = require('gulp-clean-css'),
       // JavaScript
       terser       = require('gulp-terser'),
-      webpack      = require('webpack-stream');
+      webpack      = require('webpack-stream'),
       // BrowserSync
       browserSync  = require('browser-sync'),
       reload       = browserSync.reload;
