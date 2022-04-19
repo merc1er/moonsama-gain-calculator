@@ -1,18 +1,57 @@
 {% extends "base.njk" %}
 
 {% block body %}
-  <!-- Hero header -->
-  <section class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 flex">
-    <div class="flex-1">
+<section class="w-full px-8 py-16 xl:px-8">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="text-center py-16">
       <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
         <span class="block">Moonsama Minecraft</span>
-        <span class="block text-green-500">Gain Calculator</span>
+        <span class="block text-blue-500">Gain Calculator</span>
       </h1>
     </div>
-    <!-- Dot pattern -->
-    <div class="hidden md:inline-block mr-5">
-      {% include "icons/dot-pattern.svg" %}
+
+    <div class="w-full sm:w-96 mx-auto">
+      <div class="relative z-10 h-auto p-8 py-10 overflow-hidden bg-gray-200 border-b-2 border-gray-300 rounded-lg shadow-2xl px-7 text-black">
+
+        <div class="">
+          <h3 class="mb-6 text-2xl font-medium text-center">Input your username</h3>
+          <!-- username -->
+          <input type="number" name="username" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Minecraft username">
+
+          <div class="block">
+            <button class="w-full px-3 py-4 font-medium text-white bg-blue-600 rounded-lg">Calculate</button>
+          </div>
+        </div>
+
+        <div class="hidden">
+          <h3 class="mb-6 text-2xl font-medium text-center">Input your resources</h3>
+          <!-- wood -->
+          <input type="number" name="wood" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Wood 🪵">
+
+          <!-- stone -->
+          <input type="number" name="stone" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Stone 🪨">
+
+          <!-- iron -->
+          <input type="number" name="iron" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Iron 🪙">
+
+          <!-- exp -->
+          <input type="number" name="exp" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Exp 🟢">
+
+          <!-- grain -->
+          <input type="number" name="grain" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Grain 🌾">
+
+          <!-- gold -->
+          <input type="number" name="gold" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Gold 🥇">
+
+          <div class="block">
+            <button class="w-full px-3 py-4 font-medium text-white bg-blue-600 rounded-lg">Calculate</button>
+          </div>
+        </div>
+
+      </div>
     </div>
-  </section>
-  <!-- /Hero header -->
+
+  </div>
+</section>
 {% endblock %}
