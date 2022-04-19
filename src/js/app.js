@@ -73,3 +73,5 @@ async function getMaterialMovr(tokenId){
   const lowestPrice = prices.shift()
   return lowestPrice
 }
+
+window.getAllMaterialsMovr = getAllMaterialsMovr
