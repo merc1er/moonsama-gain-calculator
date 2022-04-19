@@ -3,7 +3,7 @@
 {% block body %}
 <section
   class="w-full px-8"
-  x-data="{ username: '', resources: '', openTab: 1, showResults: false, load: false }"
+  x-data="{ username: '', resources: '', openTab: 1, showResults: false, load: false, prices: '' }"
 >
   <div class="max-w-5xl mx-auto">
 
@@ -52,9 +52,13 @@
                 class="w-full px-3 py-4 font-medium text-white bg-blue-600 rounded-lg"
                 x-on:click="
                   load = true
+
                   response = await fetch('https://mcapi.moonsama.com/game/minecraft-carnage-2022-04-17/carnage-stats/result/final?player=' + username)
                   resources = await response.json()
-                  showResults = true
+                  if (resources.player){
+                    prices = await getAllMaterialsMovr()
+                    showResults = true
+                  }
                   load = false
                 "
               >
@@ -67,12 +71,12 @@
               <!-- <ul x-for="resource in resources">
                 <li x-text="resource"></li>
               </ul> -->
-              <div x-text="`Wood 🪵: ${resources.wood}`"></div>
-              <div x-text="`Stone 🪨: ${resources.stone}`"></div>
-              <div x-text="`Iron 🪙: ${resources.iron}`"></div>
-              <div x-text="`Exp 🟢: ${resources.exp}`"></div>
-              <div x-text="`Grain 🌾: ${resources.grain}`"></div>
-              <div x-text="`Gold 🥇: ${resources.gold}`"></div>
+              <div x-text="`Wood 🪵: $${resources.wood * prices.wood * movrPrice}`"></div>
+              <div x-text="`Stone 🪨: $${resources.stone * prices.stone * movrPrice}`"></div>
+              <div x-text="`Iron 🪙: $${resources.iron * prices.iron * movrPrice}`"></div>
+              <div x-text="`Exp 🟢: $${resources.exp * prices.exp * movrPrice}`"></div>
+              <div x-text="`Grain 🌾: $${resources.grain * prices.grain * movrPrice}`"></div>
+              <div x-text="`Gold 🥇: $${resources.gold * prices.gold * movrPrice}`"></div>
             </div>
 
           </div>

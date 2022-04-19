@@ -14,7 +14,7 @@
   <title>Moonsama Minecraft Gain Calculator</title>
 </head>
 
-<body class="bg-gray-900 text-white">
+<body class="bg-gray-900 text-white" x-data="{ movrPrice: '' }">
 
   {# Navbar #}
   <nav class="bg-gray-800">
@@ -32,7 +32,7 @@
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 
           <!-- MOVR price ticker -->
-          <div class="ml-3 relative" x-data="{ movrPrice: '' }">
+          <div class="ml-3 relative">
             <div class="flex">
               <span
                 class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium mr-2" id="movrPrice"

@@ -24,17 +24,26 @@ const materials = [{"token_id": 1, "name":"wood"}, {"token_id": 2, "name":"stone
  */
 async function getAllMaterialsMovr(){
   const proms = []
-  let results = [];
+  let rawResult = [];
   for(const material of materials){
     const prom = getMaterialMovr(material.token_id)
     proms.push(prom)
     prom.then((priceMovr)=>{
-      results.push({token_id: material.token_id, name: material.name, priceMovr})
+      rawResult.push({token_id: material.token_id, name: material.name, priceMovr})
     })
   }
   await Promise.all(proms)
-  results = results.sort((a, b) => a.token_id-b.token_id)
-  return results
+  rawResult = rawResult.sort((a, b) => a.token_id - b.token_id)
+
+  const result = {
+    wood: rawResult[0].priceMovr,
+    stone: rawResult[1].priceMovr,
+    iron: rawResult[2].priceMovr,
+    gold: rawResult[3].priceMovr,
+    exp: rawResult[4].priceMovr,
+    grain: rawResult[5].priceMovr,
+  }
+  return result
 }
 
 
