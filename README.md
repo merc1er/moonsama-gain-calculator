@@ -1,14 +1,15 @@
 <div align="center">
-  <h3>Gulp + Tailwind project skeleton</h3>
+  <img src="src/static/img/minecraft.png" style="width: 100%;">
+  <h3>Moonsama Minecraft Gain Calculator</h3>
 </div>
 
 ---
 
 ### Table of contents
 
-- [Run the develoment server](#-run-the-develoment-server)
-- [Contribute](#-contribute)
-- [Deployment](#-deployment)
+- [Run the develoment server](#-Run-the-develoment-server)
+- [Contribute](#-Develop)
+- [Deployment](#-Deploy)
 
 ---
 
