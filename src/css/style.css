@@ -3,6 +3,16 @@
 @tailwind utilities;
 
 
+body {
+  background: radial-gradient(50% 50% at 50% 50%, #fc077d10 0, rgba(255, 255, 255, 0) 100%);
+}
+
+.bg-matte-transparent {
+  background-color: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
 .card-form {
   @apply relative z-10 h-auto overflow-hidden bg-gray-200 rounded-lg
   shadow-2xl px-7 text-black py-6;
