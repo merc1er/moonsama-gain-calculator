@@ -102,7 +102,7 @@ async function getTotal(resources, prices, movrPrice){
   const totalMovr = woodValue + stoneValue + ironValue + expValue + grainValue + goldValue
   const totalUSD = totalMovr * movrPrice
   return {
-    movr: totalMovr.toFixed(4),
+    movr: totalMovr.toFixed(2),
     usd: totalUSD.toFixed(2),
   }
 }
