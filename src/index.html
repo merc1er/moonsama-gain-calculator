@@ -20,19 +20,19 @@
     <div class="w-full sm:w-96 mx-auto">
 
       <!-- Tab selector -->
-      <div class="flex">
+      <!-- <div class="flex">
         <div @click="openTab = 1" class="flex-1 text-center py-4 rounded-tl-lg px-4 cursor-pointer hover:bg-blue-400" :class="openTab === 1 ? 'bg-gray-200 text-blue-500': 'bg-blue-500 text-white'">
           Automatic
         </div>
         <div @click="openTab = 2" class="flex-1 text-center py-4 rounded-tr-lg px-4 cursor-pointer hover:bg-blue-400" :class="openTab === 2 ? 'bg-gray-200 text-blue-500': 'bg-blue-500 text-white'">
           Manual
         </div>
-      </div>
+      </div> -->
       <!-- /Tab selector -->
 
       <!-- Form content -->
       <div class="card-form">
-        <div class="w-full pt-4">
+        <div class="w-full">
           <!-- By User Tab -->
           <div x-show="openTab === 1" x-transition.duration.0ms>
 
@@ -81,7 +81,7 @@
               <div x-text="`Exp 🟢: $${resources.exp * prices.exp * movrPrice}`"></div>
               <div x-text="`Grain 🌾: $${resources.grain * prices.grain * movrPrice}`"></div>
               <div x-text="`Gold 🥇: $${resources.gold * prices.gold * movrPrice}`"></div> -->
-              <div class="mt-2 w-full px-3 py-4">
+              <div class="mt-2 w-full px-3 mt-4">
                 <div class="text-center text-lg font-bold">Total value of your resources</div>
 
                 <div class="flex items-center mt-2 justify-center">

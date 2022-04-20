@@ -4,8 +4,8 @@
 
 
 .card-form {
-  @apply relative z-10 h-auto overflow-hidden bg-gray-200 rounded-b-lg
-  shadow-2xl px-7 text-black pb-6;
+  @apply relative z-10 h-auto overflow-hidden bg-gray-200 rounded-lg
+  shadow-2xl px-7 text-black py-6;
 }
 
 .input {
