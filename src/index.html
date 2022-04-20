@@ -34,7 +34,7 @@
       <div class="card-form">
         <div class="w-full pt-4">
           <!-- By User Tab -->
-          <div x-show="openTab === 1">
+          <div x-show="openTab === 1" x-transition.duration.0ms>
 
             <h3 class="mb-6 text-2xl font-medium text-center">Input your username</h3>
 
@@ -90,7 +90,7 @@
           <!-- End By User Tab -->
 
           <!-- By Resources Tab -->
-          <div class="" x-show="openTab === 2">
+          <div class="" x-show="openTab === 2" x-transition.duration.0ms>
             <h3 class="mb-6 text-2xl font-medium text-center">Input your resources</h3>
             <!-- wood -->
             <input type="number" name="wood" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Wood 🪵">
