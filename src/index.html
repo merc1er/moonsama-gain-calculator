@@ -36,11 +36,11 @@
           <!-- By User Tab -->
           <div x-show="openTab === 1" x-transition.duration.0ms>
 
-            <h3 class="mb-6 text-2xl font-medium text-center">Input your username</h3>
+            <img src="/static/img/minecraft.png" alt="Minecraft characters" class="h-44 mx-auto">
 
             <!-- Username input -->
             <div class="mb-4">
-              <input type="text" x-model="username" autocorrect="off" autocapitalize="off" spellcheck="false" name="minecraftname" class="input" placeholder="Minecraft Name">
+              <input type="text" x-model="username" autocorrect="off" autocapitalize="off" spellcheck="false" name="minecraftname" class="input" placeholder="Minecraft name">
               <div x-show="userNotFound">
                 <div class="text-center text-red-700">User not found</div>
               </div>
