@@ -36,7 +36,7 @@ Use the coding style recommended by [codeguide.co](https://codeguide.co).
 
 - CSS files are located in `/src/css/`.
 
-- TypeScript files are located in `/src/ts/`. The files are concatenated in alphabetical order unless specified otherwise.
+- JavaScript files are located in `/src/js/`.
 
 
 Hit `ctrl + C` to stop the server.

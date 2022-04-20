@@ -108,5 +108,6 @@ async function getTotal(resources, prices, movrPrice){
 }
 
 
+// Make the following functions accessible from AlpineJS
 window.getAllMaterialsMovr = getAllMaterialsMovr
 window.getTotal = getTotal
