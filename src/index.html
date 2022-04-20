@@ -75,17 +75,24 @@
               <!-- <ul x-for="resource in resources">
                 <li x-text="resource"></li>
               </ul> -->
-              <!-- <div x-text="`Wood 🪵: $${resources.wood * prices.wood * movrPrice}`"></div>
-              <div x-text="`Stone 🪨: $${resources.stone * prices.stone * movrPrice}`"></div>
-              <div x-text="`Iron 🪙: $${resources.iron * prices.iron * movrPrice}`"></div>
-              <div x-text="`Exp 🟢: $${resources.exp * prices.exp * movrPrice}`"></div>
-              <div x-text="`Grain 🌾: $${resources.grain * prices.grain * movrPrice}`"></div>
-              <div x-text="`Gold 🥇: $${resources.gold * prices.gold * movrPrice}`"></div> -->
-              <div class="mt-2 w-full px-3 mt-4">
+              <div class="mt-2 w-full px-3 mt-4" x-data="{ detailedView: false }">
                 <div class="text-center text-lg font-bold">Total value of your resources</div>
 
                 <div class="flex items-center mt-2 justify-center">
                   <span x-text="total.movr"></span> <img src="/static/img/movr.png" class="h-4 w-4"> (~ $<span x-text="total.usd"></span>)
+                </div>
+
+                <div class="text-center mt-2">
+                  <div class="text-gray-600 hover:text-blue-600 text-sm underline cursor-pointer" @click="detailedView = !detailedView">Detailed view</div>
+                </div>
+
+                <div x-show="detailedView" class="text-sm text-center text-gray-800 mt-2">
+                  <div x-text="`Wood 🪵: ${(resources.wood * prices.wood).toFixed(2)} MOVR`"></div>
+                  <div x-text="`Stone 🪨: ${(resources.stone * prices.stone).toFixed(2)} MOVR`"></div>
+                  <div x-text="`Iron 🪙: ${(resources.iron * prices.iron).toFixed(2)} MOVR`"></div>
+                  <div x-text="`Exp 🟢: ${(resources.exp * prices.exp).toFixed(2)} MOVR`"></div>
+                  <div x-text="`Grain 🌾: ${(resources.grain * prices.grain).toFixed(2)} MOVR`"></div>
+                  <div x-text="`Gold 🥇: ${(resources.gold * prices.gold).toFixed(2)} MOVR`"></div>
                 </div>
               </div>
 
