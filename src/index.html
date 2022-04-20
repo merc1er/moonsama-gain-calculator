@@ -40,8 +40,9 @@
 
             <!-- Username input -->
             <div class="mb-4">
-              <input type="text" x-model="username" autocorrect="off" autocapitalize="off" spellcheck="false" name="username" class="input" placeholder="Minecraft username">
-
+              <form>
+                <input type="text" x-model="username" autocorrect="off" autocapitalize="off" spellcheck="false" name="minecraftname" class="input" placeholder="Minecraft Name">
+              </form>
               <div x-show="userNotFound">
                 <div class="text-center text-red-700">User not found</div>
               </div>
