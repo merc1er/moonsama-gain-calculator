@@ -3,7 +3,7 @@
 {% block body %}
 <section
   class="w-full px-8"
-  x-data="{ username: '', resources: '', openTab: 1, showResults: false, load: false, prices: '', totalUSD: 0, userNotFound: false }"
+  x-data="{ username: '', resources: '', openTab: 1, showResults: false, load: false, prices: '', total: 0, userNotFound: false }"
 >
   <div class="max-w-5xl mx-auto">
 
@@ -40,9 +40,7 @@
 
             <!-- Username input -->
             <div class="mb-4">
-              <form>
-                <input type="text" x-model="username" autocorrect="off" autocapitalize="off" spellcheck="false" name="minecraftname" class="input" placeholder="Minecraft Name">
-              </form>
+              <input type="text" x-model="username" autocorrect="off" autocapitalize="off" spellcheck="false" name="minecraftname" class="input" placeholder="Minecraft Name">
               <div x-show="userNotFound">
                 <div class="text-center text-red-700">User not found</div>
               </div>
@@ -58,7 +56,7 @@
                   resources = await response.json()
                   if (resources.player){
                     prices = await getAllMaterialsMovr()
-                    totalUSD = await getTotalUSD(resources, prices, movrPrice)
+                    total = await getTotal(resources, prices, movrPrice)
                     showResults = true
                     userNotFound = false
                   } else {
@@ -83,7 +81,14 @@
               <div x-text="`Exp 🟢: $${resources.exp * prices.exp * movrPrice}`"></div>
               <div x-text="`Grain 🌾: $${resources.grain * prices.grain * movrPrice}`"></div>
               <div x-text="`Gold 🥇: $${resources.gold * prices.gold * movrPrice}`"></div> -->
-              <div class="mt-2" x-text="`Total: $${totalUSD}`"></div>
+              <div class="mt-2 w-full px-3 py-4">
+                <div class="text-center text-lg font-bold">Total value of your resources</div>
+
+                <div class="flex items-center mt-2 justify-center">
+                  <span x-text="total.movr"></span> <img src="/static/img/movr.png" class="h-4 w-4"> (~ $<span x-text="total.usd"></span>)
+                </div>
+              </div>
+
             </div>
 
           </div>

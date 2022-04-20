@@ -91,18 +91,22 @@ async function getMaterialMovr(tokenId){
  * @param {Float} price of MOVR token in USD: movrPrice
  * @returns {Float}
  */
-async function getTotalUSD(resources, prices, movrPrice){
-  const woodValue = resources.wood * prices.wood * movrPrice
-  const stoneValue = resources.stone * prices.stone * movrPrice
-  const ironValue = resources.iron * prices.iron * movrPrice
-  const expValue = resources.exp * prices.exp * movrPrice
-  const grainValue = resources.grain * prices.grain * movrPrice
-  const goldValue = resources.gold * prices.gold * movrPrice
+async function getTotal(resources, prices, movrPrice){
+  const woodValue = resources.wood * prices.wood
+  const stoneValue = resources.stone * prices.stone
+  const ironValue = resources.iron * prices.iron
+  const expValue = resources.exp * prices.exp
+  const grainValue = resources.grain * prices.grain
+  const goldValue = resources.gold * prices.gold
 
-  const total = woodValue + stoneValue + ironValue + expValue + grainValue + goldValue
-  return total.toFixed(2)
+  const totalMovr = woodValue + stoneValue + ironValue + expValue + grainValue + goldValue
+  const totalUSD = totalMovr * movrPrice
+  return {
+    movr: totalMovr.toFixed(4),
+    usd: totalUSD.toFixed(2),
+  }
 }
 
 
 window.getAllMaterialsMovr = getAllMaterialsMovr
-window.getTotalUSD = getTotalUSD
+window.getTotal = getTotal
