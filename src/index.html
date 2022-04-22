@@ -31,15 +31,66 @@
       <!-- /Tab selector -->
 
       <!-- Form content -->
-      <div class="card-form">
+      <div
+        class="card-form"
+        x-data="{ weekSelectorOpen: false, date: '2022-04-17' }"
+      >
         <div class="w-full">
           <!-- By User Tab -->
           <div x-show="openTab === 1" x-transition.duration.0ms>
 
             <img src="/static/img/minecraft.png" alt="Minecraft characters" class="h-44 mx-auto">
 
+            <!-- Week selector -->
+            <div class="mt-3">
+              <label id="listbox-label" class="block text-sm font-medium text-gray-700">Carnage event date</label>
+              <div class="mt-1 relative">
+                {# Week main input #}
+                <button
+                  type="button"
+                  class="relative w-full bg-white cursor-pointer border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                  aria-haspopup="listbox"
+                  aria-expanded="true"
+                  aria-labelledby="listbox-label"
+                  @click="weekSelectorOpen = !weekSelectorOpen"
+                  @click.away="weekSelectorOpen = false"
+                >
+                  <span class="flex items-center">
+                    <span class="block truncate" x-text="formatDate(date)"></span>
+                  </span>
+                  <span class="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                    {% include "icons/selector.svg" %}
+                  </span>
+                </button>
+                {# /Week main input #}
+
+                <ul class="selector-ul" tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3" x-show="weekSelectorOpen">
+
+                  <li @click="date = '2022-04-17'">
+                    <div class="flex items-center">
+                      <span>17 April 2022</span>
+                    </div>
+                  </li>
+
+                  <li @click="date = '2022-04-10'">
+                    <div class="flex items-center">
+                      <span>10 April 2022</span>
+                    </div>
+                  </li>
+
+                  <li @click="date = '2022-04-03'">
+                    <div class="flex items-center">
+                      <span>3 April 2022</span>
+                    </div>
+                  </li>
+
+                </ul>
+              </div>
+            </div>
+
+
             <!-- Username input -->
-            <div class="mb-4">
+            <div class="my-4">
               <input type="text" x-model="username" autocorrect="off" autocapitalize="off" spellcheck="false" name="minecraftname" class="input" placeholder="Minecraft name">
               <div x-show="userNotFound">
                 <div class="text-center text-red-700">User not found</div>
@@ -52,7 +103,7 @@
                 x-on:click="
                   load = true
 
-                  response = await fetch('https://mcapi.moonsama.com/game/minecraft-carnage-2022-04-17/carnage-stats/result/final?player=' + username)
+                  response = await fetch(`https://mcapi.moonsama.com/game/minecraft-carnage-${date}/carnage-stats/result/final?player=${username}`)
                   resources = await response.json()
                   if (resources.player){
                     prices = await getAllMaterialsMovr()

@@ -1,9 +1,5 @@
 import Alpine from 'alpinejs'
 
-window.Alpine = Alpine
-
-Alpine.start()
-
 /*material ids correspond to token id
 https://moonsama.com/token/ERC1155/0x1b30a3b5744e733d8d2f19f0812e3f79152a8777/10
 ^token id is last part of URL
@@ -108,6 +104,25 @@ async function getTotal(resources, prices, movrPrice){
 }
 
 
+// Date
+
+/**
+ * Make a date more human-readable
+ * @param {Date} date: the date that needs to be prettified (yyyy-mm-dd format)
+ * @returns {String}
+ */
+function formatDate(date){
+  const options = {year: 'numeric', month: 'long', day: 'numeric'}
+  return new Date(date).toLocaleDateString("en-GB", options)
+}
+
+
 // Make the following functions accessible from AlpineJS
 window.getAllMaterialsMovr = getAllMaterialsMovr
 window.getTotal = getTotal
+window.formatDate = formatDate
+
+
+// Load Alpine
+window.Alpine = Alpine
+Alpine.start()

@@ -13,7 +13,7 @@ body {
 }
 
 .input {
-  @apply block w-full bg-gray-100 px-4 py-3 border border-2 border-transparent
+  @apply block w-full px-4 py-3 border border-2 border-transparent
   border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none
 }
 
@@ -24,3 +24,20 @@ body {
 .footer-link {
   @apply text-gray-300 text-xs;
 }
+
+/* Selectors */
+.selector-ul {
+  @apply absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1
+  text-base ring-1 ring-black ring-opacity-5 overflow-auto sm:text-sm
+}
+
+.selector-ul > li {
+  @apply text-gray-900 cursor-pointer select-none relative py-2 pl-3 pr-9
+  hover:text-white hover:bg-blue-600;
+}
+
+.selector-ul > li span {
+  @apply font-normal block truncate;
+}
+
+
