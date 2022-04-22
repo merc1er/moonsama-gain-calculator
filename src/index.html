@@ -86,14 +86,53 @@
                   <div class="text-gray-600 hover:text-blue-600 text-sm underline cursor-pointer" @click="detailedView = !detailedView">Detailed view</div>
                 </div>
 
-                <div x-show="detailedView" class="text-sm text-center text-gray-800 mt-2">
-                  <div x-text="`Wood 🪵: ${(resources.wood * prices.wood).toFixed(2)} MOVR`"></div>
-                  <div x-text="`Stone 🪨: ${(resources.stone * prices.stone).toFixed(2)} MOVR`"></div>
-                  <div x-text="`Iron 🪙: ${(resources.iron * prices.iron).toFixed(2)} MOVR`"></div>
-                  <div x-text="`Exp 🟢: ${(resources.exp * prices.exp).toFixed(2)} MOVR`"></div>
-                  <div x-text="`Grain 🌾: ${(resources.grain * prices.grain).toFixed(2)} MOVR`"></div>
-                  <div x-text="`Gold 🥇: ${(resources.gold * prices.gold).toFixed(2)} MOVR`"></div>
-                </div>
+                <table x-show="detailedView" class="table-auto w-full text-sm text-left text-gray-800">
+                  <thead>
+                    <tr>
+                      <th colspan="2" >Material</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="w-1/12">🪵</td>
+                      <td class="w-3/12">Wood</td>
+                      <td class="w-3/12" x-text="`${parseFloat(resources.wood).toFixed(3)}`"></td>                  
+                      <td class="w-5/12" x-text="`${(resources.wood * prices.wood).toFixed(3)} MOVR`"></td>
+                    </tr>
+                    <tr>
+                      <td>🪨</td>
+                      <td>Stone</td>
+                      <td x-text="`${parseFloat(resources.stone).toFixed(3)}`"></td>                  
+                      <td x-text="`${(resources.stone * prices.stone).toFixed(3)} MOVR`"></td>
+                    </tr>
+                    <tr>
+                      <td>🪙</td>
+                      <td>Iron</td>
+                      <td x-text="`${parseFloat(resources.iron).toFixed(3)}`"></td>                  
+                      <td x-text="`${(resources.iron * prices.iron).toFixed(3)} MOVR`"></td>
+                    </tr>
+                    <tr>
+                      <td>🟢</td>
+                      <td>Exp</td>
+                      <td x-text="`${parseFloat(resources.exp).toFixed(3)}`"></td>                  
+                      <td x-text="`${(resources.exp * prices.exp).toFixed(3)} MOVR`"></td>
+                    </tr>
+                    <tr>
+                      <td>🌾</td>
+                      <td>Grain</td>
+                      <td x-text="`${parseFloat(resources.grain).toFixed(3)}`"></td>                  
+                      <td x-text="`${(resources.grain * prices.grain).toFixed(3)} MOVR`"></td>
+                    </tr>
+                    <tr>
+                      <td>🥇</td>
+                      <td>Gold</td>
+                      <td x-text="`${parseFloat(resources.gold).toFixed(3)}`"></td>                  
+                      <td x-text="`${(resources.gold * prices.gold).toFixed(3)} MOVR`"></td>
+                    </tr>                
+                  </tbody>
+                </table>
               </div>
 
             </div>
