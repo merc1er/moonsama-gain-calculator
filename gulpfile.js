@@ -105,7 +105,7 @@ gulp.task('css-dev', function() {
 // Bundle and minify JavaScript
 gulp.task('js', () =>
   gulp.src('src/js/app.js')
-    .pipe(webpack())
+    .pipe(webpack({mode: 'production'}))
     .pipe(gulp.dest('dist/static/js/'))
 );
 
