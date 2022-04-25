@@ -116,12 +116,47 @@ function formatDate(date){
   return new Date(date).toLocaleDateString("en-GB", options)
 }
 
+/**
+ * Format date for api request
+ * @param {Date} date: the date that needs to be prettified (yyyy-mm-dd format)
+ * @returns {String}
+ */
+function formatDateApi(date){
+  return new Date(date).toISOString().split('T')[0]
+}
+
+
+/**
+ * Returns 
+ * @returns {Date[]}
+ */
+function carnageDates() {
+  //2022-04-03 first date that carnage api has
+  const currentTime = new Date().getTime()
+  const dates = [];
+  let count = 0
+  while(true){
+    const dt = new Date(Date.UTC(2022, 3, 3));
+
+    dt.setDate(dt.getDate() + count * 7)
+    console.log(`dt.getTime(): ${dt.getTime()} currentTime: ${currentTime}`)
+
+    if(dt.getTime() > currentTime){
+      break
+    }
+    dates.push(dt)
+    count++
+  }
+  return dates.reverse()
+}
+
 
 // Make the following functions accessible from AlpineJS
 window.getAllMaterialsMovr = getAllMaterialsMovr
 window.getTotal = getTotal
 window.formatDate = formatDate
-
+window.formatDateApi = formatDateApi
+window.carnageDates = carnageDates
 
 // Load Alpine
 window.Alpine = Alpine

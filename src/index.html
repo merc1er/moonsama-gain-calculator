@@ -33,7 +33,7 @@
       <!-- Form content -->
       <div
         class="card-form"
-        x-data="{ weekSelectorOpen: false, date: '2022-04-24' }"
+        x-data="{ weekSelectorOpen: false, selectedDate: formatDate(carnageDates()[1]) }"
       >
         <div class="w-full">
           <!-- By User Tab -->
@@ -56,7 +56,7 @@
                   @click.away="weekSelectorOpen = false"
                 >
                   <span class="flex items-center">
-                    <span class="block truncate" x-text="formatDate(date)"></span>
+                    <span class="block truncate" x-text="formatDate(selectedDate)"></span>
                   </span>
                   <span class="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                     {% include "icons/selector.svg" %}
@@ -64,31 +64,15 @@
                 </button>
                 {# /Week main input #}
 
-                <ul class="selector-ul" tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3" x-show="weekSelectorOpen">
+                <ul class="selector-ul" tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3" x-show="weekSelectorOpen" x-data="{carnageDates: carnageDates()}">
 
-                  <li @click="date = '2022-04-24'">
-                    <div class="flex items-center">
-                      <span>24 April 2022</span>
-                    </div>
-                  </li>
-
-                  <li @click="date = '2022-04-17'">
-                    <div class="flex items-center">
-                      <span>17 April 2022</span>
-                    </div>
-                  </li>
-
-                  <li @click="date = '2022-04-10'">
-                    <div class="flex items-center">
-                      <span>10 April 2022</span>
-                    </div>
-                  </li>
-
-                  <li @click="date = '2022-04-03'">
-                    <div class="flex items-center">
-                      <span>3 April 2022</span>
-                    </div>
-                  </li>
+                  <template x-for="carnageDate in carnageDates" :key="carnageDate.getTime()">
+                    <li @click="selectedDate = carnageDate">
+                      <div class="flex items-center">
+                        <span x-text="formatDate(carnageDate)"></span>
+                      </div>
+                    </li>
+                  </template>
 
                 </ul>
               </div>
@@ -109,7 +93,7 @@
                 x-on:click="
                   load = true
 
-                  response = await fetch(`https://mcapi.moonsama.com/game/minecraft-carnage-${date}/carnage-stats/result/final?player=${username}`)
+                  response = await fetch(`https://mcapi.moonsama.com/game/minecraft-carnage-${formatDateApi(selectedDate)}/carnage-stats/result/final?player=${username}`)
                   resources = await response.json()
                   if (resources.player){
                     prices = await getAllMaterialsMovr()
