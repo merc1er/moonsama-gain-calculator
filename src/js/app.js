@@ -108,7 +108,7 @@ async function getTotal(resources, prices, movrPrice){
 
 /**
  * Make a date more human-readable
- * @param {Date} date: the date that needs to be prettified (yyyy-mm-dd format)
+ * @param {Date} date: the date that needs to be prettified (3 April 2022 format)
  * @returns {String}
  */
 function formatDate(date){
@@ -128,23 +128,21 @@ function formatDateApi(date){
 
 /**
  * Returns 
- * @returns {Date[]}
+ * @returns {number[]}
  */
 function carnageDates() {
   //2022-04-03 first date that carnage api has
-  const currentTime = new Date().getTime()
-  const dates = [];
-  let count = 0
+  const carnageStartTime = 1648947601000;
+  let carnageTime = carnageStartTime
+  const nowTime = new Date().getTime()
+  const dates = [carnageTime];
   while(true){
-    const dt = new Date(Date.UTC(2022, 3, 3));
+    carnageTime = carnageTime + 1000 * 60 * 60 * 24 * 7
 
-    dt.setDate(dt.getDate() + count * 7)
-
-    if(dt.getTime() > currentTime){
+    if(carnageTime > nowTime){
       break
     }
-    dates.push(dt)
-    count++
+    dates.push(carnageTime)
   }
   return dates.reverse()
 }
