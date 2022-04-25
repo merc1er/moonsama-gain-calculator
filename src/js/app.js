@@ -127,7 +127,6 @@ function formatDateApi(date){
 
 
 /**
- * Returns 
  * @returns {number[]}
  */
 function carnageDates() {
