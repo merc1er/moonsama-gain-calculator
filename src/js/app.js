@@ -87,7 +87,7 @@ async function getMaterialMovr(tokenId){
  * @param {Float} price of MOVR token in USD: movrPrice
  * @returns {Float}
  */
-async function getTotal(resources, prices, movrPrice){
+function getTotal(resources, prices, movrPrice){
   const woodValue = resources.wood * prices.wood
   const stoneValue = resources.stone * prices.stone
   const ironValue = resources.iron * prices.iron
@@ -108,7 +108,7 @@ async function getTotal(resources, prices, movrPrice){
 
 /**
  * Make a date more human-readable
- * @param {Date} date: the date that needs to be prettified (yyyy-mm-dd format)
+ * @param {Date} date: the date that needs to be prettified (3 April 2022 format)
  * @returns {String}
  */
 function formatDate(date){
@@ -116,12 +116,44 @@ function formatDate(date){
   return new Date(date).toLocaleDateString("en-GB", options)
 }
 
+/**
+ * Format date for api request
+ * @param {Date} date: the date that needs to be prettified (yyyy-mm-dd format)
+ * @returns {String}
+ */
+function formatDateApi(date){
+  return new Date(date).toISOString().split('T')[0]
+}
+
+
+/**
+ * Returns 
+ * @returns {number[]}
+ */
+function carnageDates() {
+  //2022-04-03 first date that carnage api has
+  const carnageStartTime = 1648947601000;
+  let carnageTime = carnageStartTime
+  const nowTime = new Date().getTime()
+  const dates = [carnageTime];
+  while(true){
+    carnageTime = carnageTime + 1000 * 60 * 60 * 24 * 7
+
+    if(carnageTime > nowTime){
+      break
+    }
+    dates.push(carnageTime)
+  }
+  return dates.reverse()
+}
+
 
 // Make the following functions accessible from AlpineJS
 window.getAllMaterialsMovr = getAllMaterialsMovr
 window.getTotal = getTotal
 window.formatDate = formatDate
-
+window.formatDateApi = formatDateApi
+window.carnageDates = carnageDates
 
 // Load Alpine
 window.Alpine = Alpine
