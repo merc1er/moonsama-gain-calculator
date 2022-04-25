@@ -139,7 +139,6 @@ function carnageDates() {
     const dt = new Date(Date.UTC(2022, 3, 3));
 
     dt.setDate(dt.getDate() + count * 7)
-    console.log(`dt.getTime(): ${dt.getTime()} currentTime: ${currentTime}`)
 
     if(dt.getTime() > currentTime){
       break
