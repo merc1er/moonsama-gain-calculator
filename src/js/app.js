@@ -87,7 +87,7 @@ async function getMaterialMovr(tokenId){
  * @param {Float} price of MOVR token in USD: movrPrice
  * @returns {Float}
  */
-async function getTotal(resources, prices, movrPrice){
+function getTotal(resources, prices, movrPrice){
   const woodValue = resources.wood * prices.wood
   const stoneValue = resources.stone * prices.stone
   const ironValue = resources.iron * prices.iron
