@@ -98,23 +98,30 @@ async function getMaterialMovr(tokenId){
  * @param {Dict} resources
  * @param {Dict} prices
  * @param {Float} price of MOVR token in USD: movrPrice
- * @returns {Float}
+ * @returns {totalAskMovr: number, totalAskUsd: number, totalBidMovr, totalBidUsd}
  */
 function getTotal(resources, prices, movrPrice){
   console.log(prices)
-  const woodValue = resources.wood * prices.wood.highestAsk
-  const stoneValue = resources.stone * prices.stone.highestAsk
-  const ironValue = resources.iron * prices.iron.highestAsk
-  const expValue = resources.exp * prices.exp.highestAsk
-  const grainValue = resources.grain * prices.grain.highestAsk
-  const goldValue = resources.gold * prices.gold.highestAsk
+  const woodValueAsk = resources.wood * prices.wood.highestAsk
+  const stoneValueAsk = resources.stone * prices.stone.highestAsk
+  const ironValueAsk = resources.iron * prices.iron.highestAsk
+  const expValueAsk = resources.exp * prices.exp.highestAsk
+  const grainValueAsk = resources.grain * prices.grain.highestAsk
+  const goldValueAsk = resources.gold * prices.gold.highestAsk
 
-  const totalMovr = woodValue + stoneValue + ironValue + expValue + grainValue + goldValue
-  const totalUSD = totalMovr * movrPrice
-  return {
-    movr: totalMovr.toFixed(2),
-    usd: totalUSD.toFixed(2),
-  }
+  const woodValueBid = resources.wood * prices.wood.lowestBid
+  const stoneValueBid = resources.stone * prices.stone.lowestBid
+  const ironValueBid = resources.iron * prices.iron.lowestBid
+  const expValueBid = resources.exp * prices.exp.lowestBid
+  const grainValueBid = resources.grain * prices.grain.lowestBid
+  const goldValueBid = resources.gold * prices.gold.lowestBid
+
+  const totalAskMovr = woodValueAsk + stoneValueAsk + ironValueAsk + expValueAsk + grainValueAsk + goldValueAsk
+  const totalAskUsd = totalAskMovr * movrPrice
+
+  const totalBidMovr = woodValueBid + stoneValueBid + ironValueBid + expValueBid + grainValueBid + goldValueBid
+  const totalBidUsd = totalBidMovr * movrPrice
+  return {totalAskMovr: totalAskMovr.toFixed(2), totalAskUsd: totalAskUsd.toFixed(2), totalBidMovr: totalBidMovr.toFixed(2), totalBidUsd: totalBidUsd.toFixed(2)}
 }
 
 
