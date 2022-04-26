@@ -170,6 +170,8 @@ function carnageDates() {
 
 // Make the following functions accessible from AlpineJS
 window.getAllMaterialsMovr = getAllMaterialsMovr
+//load material quote on page load
+window.getAllMaterialsMovrPromise = getAllMaterialsMovr()
 window.getTotal = getTotal
 window.formatDate = formatDate
 window.formatDateApi = formatDateApi

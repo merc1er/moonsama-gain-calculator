@@ -44,7 +44,7 @@
                   this.showResults = false
                   this.load = true
                   try{
-                    const results = await Promise.all([getPlayerResults(), getAllMaterialsMovr()])
+                    const results = await Promise.all([getPlayerResults(), getAllMaterialsMovrPromise])
                     this.resources = results[0]
                     this.prices = results[1]
                     this.total = getTotal(this.resources, this.prices, this.movrPrice)
