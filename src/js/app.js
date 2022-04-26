@@ -168,6 +168,15 @@ function carnageDates() {
 }
 
 
+/**
+ * Add thousands separators
+ * @param {Number}
+ * @returns {String}
+ */
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 // Make the following functions accessible from AlpineJS
 window.getAllMaterialsMovr = getAllMaterialsMovr
 //load material quote on page load
@@ -176,6 +185,7 @@ window.getTotal = getTotal
 window.formatDate = formatDate
 window.formatDateApi = formatDateApi
 window.carnageDates = carnageDates
+window.numberWithCommas = numberWithCommas
 
 // Load Alpine
 window.Alpine = Alpine

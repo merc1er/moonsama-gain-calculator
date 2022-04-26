@@ -135,7 +135,7 @@
 
                 {# Total USD value #}
                 <div class="flex items-center mt-2 justify-center">
-                  <span x-text="total.totalAskMovr"></span> <img src="/static/img/movr.png" class="h-4 w-4"> (~ $<span x-text="total.totalAskUsd"></span>)
+                  <span x-text="total.totalAskMovr"></span> <img src="/static/img/movr.png" class="h-4 w-4"> (~ $<span x-text="numberWithCommas(total.totalAskUsd)"></span>)
                 </div>
                 {# /Total USD value #}
 
@@ -199,8 +199,8 @@
                       <td></td>
                       <td></td>
                       <td x-text="`Total`"></td>
-                      <td x-text="`$${total.totalAskUsd}`"></td>
-                      <td x-text="`$${total.totalBidUsd}`"></td>
+                      <td x-text="`$${numberWithCommas(total.totalAskUsd)}`"></td>
+                      <td x-text="`$${numberWithCommas(total.totalBidUsd)}`"></td>
                     </tr>
                   </tbody>
                 </table>
