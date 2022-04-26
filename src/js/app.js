@@ -101,12 +101,13 @@ async function getMaterialMovr(tokenId){
  * @returns {Float}
  */
 function getTotal(resources, prices, movrPrice){
-  const woodValue = resources.wood * prices.wood
-  const stoneValue = resources.stone * prices.stone
-  const ironValue = resources.iron * prices.iron
-  const expValue = resources.exp * prices.exp
-  const grainValue = resources.grain * prices.grain
-  const goldValue = resources.gold * prices.gold
+  console.log(prices)
+  const woodValue = resources.wood * prices.wood.highestAsk
+  const stoneValue = resources.stone * prices.stone.highestAsk
+  const ironValue = resources.iron * prices.iron.highestAsk
+  const expValue = resources.exp * prices.exp.highestAsk
+  const grainValue = resources.grain * prices.grain.highestAsk
+  const goldValue = resources.gold * prices.gold.highestAsk
 
   const totalMovr = woodValue + stoneValue + ironValue + expValue + grainValue + goldValue
   const totalUSD = totalMovr * movrPrice
