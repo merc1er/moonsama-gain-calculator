@@ -133,9 +133,11 @@
               <div class="mt-2 w-full px-3 mt-4" x-data="{ detailedView: false }">
                 <div class="text-center text-lg font-bold">Total value of your resources</div>
 
+                {# Total USD value #}
                 <div class="flex items-center mt-2 justify-center">
                   <span x-text="total.movr"></span> <img src="/static/img/movr.png" class="h-4 w-4"> (~ $<span x-text="total.usd"></span>)
                 </div>
+                {# /Total USD value #}
 
                 <div class="text-center mt-2">
                   <div class="text-gray-600 hover:text-blue-600 text-sm underline cursor-pointer" @click="detailedView = !detailedView">Detailed view</div>
@@ -184,21 +186,21 @@
                       <td>Grain</td>
                       <td x-text="`${parseFloat(resources.grain).toFixed(3)}`"></td>
                       <td x-text="`${(resources.grain * prices.grain.highestAsk).toFixed(3)}`"></td>
-                      <td x-text="`${(resources.grain * prices.grain.lowestBid).toFixed(3)}`"></td>                    
+                      <td x-text="`${(resources.grain * prices.grain.lowestBid).toFixed(3)}`"></td>
                     </tr>
                     <tr>
                       <td>🥇</td>
                       <td>Gold</td>
                       <td x-text="`${parseFloat(resources.gold).toFixed(3)}`"></td>
                       <td x-text="`${(resources.gold * prices.gold.highestAsk).toFixed(3)}`"></td>
-                      <td x-text="`${(resources.gold * prices.gold.lowestBid).toFixed(3)}`"></td>                    
+                      <td x-text="`${(resources.gold * prices.gold.lowestBid).toFixed(3)}`"></td>
                     </tr>
                     <tr>
                       <td></td>
                       <td></td>
                       <td x-text="`Total`"></td>
                       <td x-text="`$9`"></td>
-                      <td x-text="`$10`"></td>                    
+                      <td x-text="`$10`"></td>
                     </tr>
                   </tbody>
                 </table>
