@@ -4,40 +4,42 @@ import Alpine from 'alpinejs'
 https://moonsama.com/token/ERC1155/0x1b30a3b5744e733d8d2f19f0812e3f79152a8777/10
 ^token id is last part of URL
 */
-const materials = [{"token_id": 1, "name":"wood"}, {"token_id": 2, "name":"stone"}, {"token_id": 3, "name":"iron"}, {"token_id": 4, "name":"gold"}, {"token_id": 5, "name":"experience"}, {"token_id": 10, "name":"grain"}]
+const materials = [{"tokenId": 1, "name":"wood"}, {"tokenId": 2, "name":"stone"}, {"tokenId": 3, "name":"iron"}, {"tokenId": 4, "name":"gold"}, {"tokenId": 5, "name":"experience"}, {"tokenId": 10, "name":"grain"}]
 
 
 /**
  * @typedef {Object} MaterialResult
- * @property {number} token_id - id of token
+ * @property {number} tokenId - id of token
  * @property {string} name - name of token
- * @property {number} priceMovr
+ * @property {number} lowestBid
+ * @property {number} highestAsk
  */
 
 /**
- * Returns prices, token_ids, and names for all minecraft NFTs
+ * Returns prices, tokenIds, and names for all minecraft NFTs
  * @returns {Promise<MaterialResult[]>}
  */
 async function getAllMaterialsMovr(){
   const proms = []
   let rawResult = [];
   for(const material of materials){
-    const prom = getMaterialMovr(material.token_id)
+    const prom = getMaterialMovr(material.tokenId)
     proms.push(prom)
-    prom.then((priceMovr)=>{
-      rawResult.push({token_id: material.token_id, name: material.name, priceMovr})
+    prom.then(({lowestBid, highestAsk})=>{
+      rawResult.push({tokenId: material.tokenId, name: material.name, lowestBid, highestAsk})
     })
   }
   await Promise.all(proms)
-  rawResult = rawResult.sort((a, b) => a.token_id - b.token_id)
+  rawResult = rawResult.sort((a, b) => a.tokenId - b.tokenId)
+
 
   const result = {
-    wood: rawResult[0].priceMovr,
-    stone: rawResult[1].priceMovr,
-    iron: rawResult[2].priceMovr,
-    gold: rawResult[3].priceMovr,
-    exp: rawResult[4].priceMovr,
-    grain: rawResult[5].priceMovr,
+    wood: rawResult[0],
+    stone: rawResult[1],
+    iron: rawResult[2],
+    gold: rawResult[3],
+    exp: rawResult[4],
+    grain: rawResult[5],
   }
   return result
 }
@@ -46,13 +48,20 @@ async function getAllMaterialsMovr(){
 /**
  * Returns the price in MOVR of token
  * @param {number} tokenId
- * @returns {Promise<number>}
+ * @returns {Promise<{bid: number, ask: number}>}
  */
 async function getMaterialMovr(tokenId){
   const graphqlQuery =
 `query getAssetOrders {
-  orders(where: {active: true, sellAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}"}) {
+  bids: orders(where: {active: true, sellAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}"}) {
     sellAsset {
+      id
+    }
+    askPerUnitNominator
+    askPerUnitDenominator
+  },
+  asks: orders(where: {active: true, buyAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}"}) {
+    buyAsset {
       id
     }
     askPerUnitNominator
@@ -74,9 +83,13 @@ async function getMaterialMovr(tokenId){
     body: JSON.stringify({query: graphqlQuery})
   });
   const responseJson = await response.json()
-  const prices = responseJson.data.orders.map(order => order.askPerUnitNominator/order.askPerUnitDenominator).sort((a, b) => a-b)
-  const lowestPrice = prices.shift()
-  return lowestPrice
+  const asks = responseJson.data.asks.map(ask => ask.askPerUnitDenominator/ask.askPerUnitNominator).sort((a, b) => a-b)
+  const bids = responseJson.data.bids.map(bid => bid.askPerUnitNominator/bid.askPerUnitDenominator).sort((a, b) => a-b)
+
+  const lowestBid = bids.shift()
+  const highestAsk = asks.pop()
+
+  return {lowestBid, highestAsk}
 }
 
 
