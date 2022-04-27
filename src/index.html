@@ -44,7 +44,7 @@
                   this.showResults = false
                   this.load = true
                   try{
-                    const results = await Promise.all([getPlayerResults(), getAllMaterialsMovr()])
+                    const results = await Promise.all([getPlayerResults(), getAllMaterialsMovrPromise])
                     this.resources = results[0]
                     this.prices = results[1]
                     this.total = getTotal(this.resources, this.prices, this.movrPrice)
@@ -135,7 +135,7 @@
 
                 {# Total USD value #}
                 <div class="flex items-center mt-2 justify-center">
-                  <span x-text="total.movr"></span> <img src="/static/img/movr.png" class="h-4 w-4"> (~ $<span x-text="total.usd"></span>)
+                  <span x-text="total.totalAskMovr"></span> <img src="/static/img/movr.png" class="h-4 w-4"> (~ $<span x-text="numberWithCommas(total.totalAskUsd)"></span>)
                 </div>
                 {# /Total USD value #}
 
@@ -143,7 +143,7 @@
                   <div class="text-gray-600 hover:text-blue-600 text-sm underline cursor-pointer" @click="detailedView = !detailedView">Detailed view</div>
                 </div>
 
-                <table x-show="detailedView" class="table-auto w-full text-sm text-left text-gray-800">
+                <table x-if="detailedView" class="table-auto w-full text-sm text-left text-gray-800">
                   <thead>
                     <tr>
                       <th colspan="2" >Material</th>
@@ -199,8 +199,8 @@
                       <td></td>
                       <td></td>
                       <td x-text="`Total`"></td>
-                      <td x-text="`$9`"></td>
-                      <td x-text="`$10`"></td>
+                      <td x-text="`$${numberWithCommas(total.totalAskUsd)}`"></td>
+                      <td x-text="`$${numberWithCommas(total.totalBidUsd)}`"></td>
                     </tr>
                   </tbody>
                 </table>
