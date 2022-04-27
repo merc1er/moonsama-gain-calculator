@@ -21,6 +21,10 @@ body {
   @apply underline hover:text-gray-100 hover:text-black;
 }
 
+.btn-link {
+  @apply text-gray-600 hover:text-blue-600 text-sm underline cursor-pointer;
+}
+
 .footer-link {
   @apply text-gray-300 text-xs;
 }

@@ -139,73 +139,79 @@
                 </div>
                 {# /Total USD value #}
 
-                <div class="text-center mt-2">
-                  <div class="text-gray-600 hover:text-blue-600 text-sm underline cursor-pointer" @click="detailedView = !detailedView">Detailed view</div>
+                <div class="text-center my-2">
+                  <div class="btn-link" @click="detailedView = !detailedView">Detailed view</div>
                 </div>
 
                 {# Detailed view table #}
                 <template x-if="detailedView">
-                  <table class="table-auto w-full text-sm text-left text-gray-800">
-                    <thead>
-                      <tr>
-                        <th colspan="2" >Material</th>
-                        <th>Quantity</th>
-                        <th>Ask</th>
-                        <th>Bid</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="w-1/12">🪵</td>
-                        <td class="w-2/12">Wood</td>
-                        <td class="w-3/12" x-text="`${parseFloat(resources.wood).toFixed(3)}`"></td>
-                        <td class="w-3/12" x-text="`${(resources.wood * prices.wood.highestAsk).toFixed(3)}`"></td>
-                        <td class="w-3/12" x-text="`${(resources.wood * prices.wood.lowestBid).toFixed(3)}`"></td>
-                      </tr>
-                      <tr>
-                        <td>🗿</td>
-                        <td>Stone</td>
-                        <td x-text="`${parseFloat(resources.stone).toFixed(3)}`"></td>
-                        <td x-text="`${(resources.stone * prices.stone.highestAsk).toFixed(3)}`"></td>
-                        <td x-text="`${(resources.stone * prices.stone.lowestBid).toFixed(3)}`"></td>
-                      </tr>
-                      <tr>
-                        <td>🪨</td>
-                        <td>Iron</td>
-                        <td x-text="`${parseFloat(resources.iron).toFixed(3)}`"></td>
-                        <td x-text="`${(resources.iron * prices.iron.highestAsk).toFixed(3)}`"></td>
-                        <td x-text="`${(resources.iron * prices.iron.lowestBid).toFixed(3)}`"></td>
-                      </tr>
-                      <tr>
-                        <td>🟢</td>
-                        <td>Exp</td>
-                        <td x-text="`${parseFloat(resources.exp).toFixed(3)}`"></td>
-                        <td x-text="`${(resources.exp * prices.exp.highestAsk).toFixed(3)}`"></td>
-                        <td x-text="`${(resources.exp * prices.exp.lowestBid).toFixed(3)}`"></td>
-                      </tr>
-                      <tr>
-                        <td>🌾</td>
-                        <td>Grain</td>
-                        <td x-text="`${parseFloat(resources.grain).toFixed(3)}`"></td>
-                        <td x-text="`${(resources.grain * prices.grain.highestAsk).toFixed(3)}`"></td>
-                        <td x-text="`${(resources.grain * prices.grain.lowestBid).toFixed(3)}`"></td>
-                      </tr>
-                      <tr>
-                        <td>🥇</td>
-                        <td>Gold</td>
-                        <td x-text="`${parseFloat(resources.gold).toFixed(3)}`"></td>
-                        <td x-text="`${(resources.gold * prices.gold.highestAsk).toFixed(3)}`"></td>
-                        <td x-text="`${(resources.gold * prices.gold.lowestBid).toFixed(3)}`"></td>
-                      </tr>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td x-text="`Total`"></td>
-                        <td x-text="`$${numberWithCommas(total.totalAskUsd)}`"></td>
-                        <td x-text="`$${numberWithCommas(total.totalBidUsd)}`"></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div>
+                    <table class="table-auto w-full text-sm text-left text-gray-800">
+                      <thead>
+                        <tr>
+                          <th colspan="2" >Material</th>
+                          <th>Quantity</th>
+                          <th>Ask</th>
+                          <th>Bid</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="w-1/12">🪵</td>
+                          <td class="w-2/12">Wood</td>
+                          <td class="w-3/12" x-text="`${parseFloat(resources.wood).toFixed(3)}`"></td>
+                          <td class="w-3/12" x-text="`${(resources.wood * prices.wood.highestAsk).toFixed(3)}`"></td>
+                          <td class="w-3/12" x-text="`${(resources.wood * prices.wood.lowestBid).toFixed(3)}`"></td>
+                        </tr>
+                        <tr>
+                          <td>🗿</td>
+                          <td>Stone</td>
+                          <td x-text="`${parseFloat(resources.stone).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.stone * prices.stone.highestAsk).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.stone * prices.stone.lowestBid).toFixed(3)}`"></td>
+                        </tr>
+                        <tr>
+                          <td>🪨</td>
+                          <td>Iron</td>
+                          <td x-text="`${parseFloat(resources.iron).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.iron * prices.iron.highestAsk).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.iron * prices.iron.lowestBid).toFixed(3)}`"></td>
+                        </tr>
+                        <tr>
+                          <td>🟢</td>
+                          <td>Exp</td>
+                          <td x-text="`${parseFloat(resources.exp).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.exp * prices.exp.highestAsk).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.exp * prices.exp.lowestBid).toFixed(3)}`"></td>
+                        </tr>
+                        <tr>
+                          <td>🌾</td>
+                          <td>Grain</td>
+                          <td x-text="`${parseFloat(resources.grain).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.grain * prices.grain.highestAsk).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.grain * prices.grain.lowestBid).toFixed(3)}`"></td>
+                        </tr>
+                        <tr>
+                          <td>🥇</td>
+                          <td>Gold</td>
+                          <td x-text="`${parseFloat(resources.gold).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.gold * prices.gold.highestAsk).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.gold * prices.gold.lowestBid).toFixed(3)}`"></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td x-text="`Total`"></td>
+                          <td x-text="`$${numberWithCommas(total.totalAskUsd)}`"></td>
+                          <td x-text="`$${numberWithCommas(total.totalBidUsd)}`"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="text-center text-xs mt-2">
+                      <a class="btn-link" href="https://marketplace.moonsama.com/collection/ERC1155/0x1b30a3b5744e733d8d2f19f0812e3f79152a8777/0" target="_blank">Price data from Moonsama</a>
+                    </div>
+                  </div>
                 </template>
                 {# /Detailed view table #}
               </div>
