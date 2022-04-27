@@ -101,7 +101,6 @@ async function getMaterialMovr(tokenId){
  * @returns {totalAskMovr: number, totalAskUsd: number, totalBidMovr, totalBidUsd}
  */
 function getTotal(resources, prices, movrPrice){
-  console.log(prices)
   const woodValueAsk = resources.wood * prices.wood.highestAsk
   const stoneValueAsk = resources.stone * prices.stone.highestAsk
   const ironValueAsk = resources.iron * prices.iron.highestAsk
