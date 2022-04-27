@@ -34,7 +34,6 @@
       <div
         class="card-form"
         x-data="{ weekSelectorOpen: false, selectedDate: carnageDates()[0], calculate: async function(){
-                  console.log('calculate')
                   this.caclulateError = ''
                   this.showResults = false
                   this.load = true
@@ -42,9 +41,6 @@
                     const response = await fetch(`https://mcapi.moonsama.com/game/minecraft-carnage-${formatDateApi(this.selectedDate)}/carnage-stats/result/final?player=${this.username}`)
                     return await response.json()
                   }
-
-
-                                    await new Promise((resolve)=>setTimeout(resolve, 10000))
 
                   try{
                     let materialsMovrProm = getAllMaterialsMovrPromise

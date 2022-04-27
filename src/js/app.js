@@ -20,10 +20,6 @@ const materials = [{"tokenId": 1, "name":"wood"}, {"tokenId": 2, "name":"stone"}
  * @returns {Promise<MaterialResult[]>}
  */
 async function getAllMaterialsMovr(){
-  if(Math.round(Math.random()) === 0){
-  throw new Error("I failed")   
-  }
-
   const proms = []
   let rawResult = [];
   for(const material of materials){
