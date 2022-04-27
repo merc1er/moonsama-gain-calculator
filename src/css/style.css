@@ -43,5 +43,3 @@ body {
 .selector-ul > li span {
   @apply font-normal block truncate;
 }
-
-
