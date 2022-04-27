@@ -34,17 +34,21 @@
       <div
         class="card-form"
         x-data="{ weekSelectorOpen: false, selectedDate: carnageDates()[0], calculate: async function(){
+                  this.caclulateError = ''
+                  this.showResults = false
+                  this.load = true
 
                   const getPlayerResults = async() =>{
                     const response = await fetch(`https://mcapi.moonsama.com/game/minecraft-carnage-${formatDateApi(this.selectedDate)}/carnage-stats/result/final?player=${this.username}`)
                     return await response.json()
                   }
 
-                  this.caclulateError = ''
-                  this.showResults = false
-                  this.load = true
                   try{
-                    const results = await Promise.all([getPlayerResults(), getAllMaterialsMovrPromise])
+                    let materialsMovrProm = getAllMaterialsMovrPromise
+                    if(window.getAllMaterialsMovrFailed){
+                      materialsMovrProm = getAllMaterialsMovr()
+                    }
+                    const results = await Promise.all([getPlayerResults(), materialsMovrProm])
                     this.resources = results[0]
                     this.prices = results[1]
                     this.total = getTotal(this.resources, this.prices, this.movrPrice)
@@ -54,9 +58,9 @@
                     }
 
                   }catch(e){
-                    this.caclulateError = e.toString()
-                    this.showResults = false
-                    this.load = false
+                     this.caclulateError = e.toString()
+                     this.showResults = false
+                     this.load = false                   
                     return
                   }
                   this.showResults = true
@@ -120,9 +124,13 @@
               <button
                 class="w-full px-3 py-4 font-medium text-white bg-blue-600 rounded-lg"
                 x-on:click="calculate()"
+                x-bind:disabled="load"
               >
                 <span x-show="!load">Calculate</span>
-                <span x-show="load">{% include "icons/loader.svg" %}</span>
+                <template x-if='load'>
+                  <span>{% include "icons/loader.svg" %}</span>
+                </template>
+                
               </button>
             </div>
 

@@ -179,7 +179,12 @@ function numberWithCommas(x) {
 // Make the following functions accessible from AlpineJS
 window.getAllMaterialsMovr = getAllMaterialsMovr
 //load material quote on page load
-window.getAllMaterialsMovrPromise = getAllMaterialsMovr()
+window.getAllMaterialsMovrFailed = false 
+const getAllMaterialsMovrPromise = getAllMaterialsMovr()
+getAllMaterialsMovrPromise.catch(()=>{
+  window.getAllMaterialsMovrFailed = true
+})
+window.getAllMaterialsMovrPromise = getAllMaterialsMovrPromise
 window.getTotal = getTotal
 window.formatDate = formatDate
 window.formatDateApi = formatDateApi
