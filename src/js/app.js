@@ -20,6 +20,10 @@ const materials = [{"tokenId": 1, "name":"wood"}, {"tokenId": 2, "name":"stone"}
  * @returns {Promise<MaterialResult[]>}
  */
 async function getAllMaterialsMovr(){
+  if(Math.round(Math.random()) === 0){
+  throw new Error("I failed")   
+  }
+
   const proms = []
   let rawResult = [];
   for(const material of materials){
@@ -179,7 +183,12 @@ function numberWithCommas(x) {
 // Make the following functions accessible from AlpineJS
 window.getAllMaterialsMovr = getAllMaterialsMovr
 //load material quote on page load
-window.getAllMaterialsMovrPromise = getAllMaterialsMovr()
+window.getAllMaterialsMovrFailed = false 
+const getAllMaterialsMovrPromise = getAllMaterialsMovr()
+getAllMaterialsMovrPromise.catch(()=>{
+  window.getAllMaterialsMovrFailed = true
+})
+window.getAllMaterialsMovrPromise = getAllMaterialsMovrPromise
 window.getTotal = getTotal
 window.formatDate = formatDate
 window.formatDateApi = formatDateApi
