@@ -143,20 +143,7 @@
 
                 {# Total USD value #}
                 <div class="flex items-center mt-2 justify-center">
-                  <table class="table-auto w-full text-sm text-left text-gray-800">
-                    <tbody>
-                      <tr>
-                        <td class="w-3/12 font-bold">Buys</td>
-                        <td class="w-5/12" x-text="`${total.totalBuyMovr} MOVR`"></td>
-                        <td class="w-4/12" x-text="`~$${numberWithCommas(total.totalBuyUsd)}`"></td>
-                      </tr>
-                      <tr>
-                        <td class="w-3/12 font-bold">Sells</td>
-                        <td class="w-5/12" x-text="`${total.totalSellMovr} MOVR`"></td>
-                        <td class="w-4/12" x-text="`~$${numberWithCommas(total.totalSellUsd)}`"></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <span x-text="total.totalBuyMovr"></span> <img src="/static/img/movr.png" class="h-4 w-4"> (~ $<span x-text="numberWithCommas(total.totalBuyUsd)"></span>)
                 </div>
                 {# /Total USD value #}
 
@@ -172,8 +159,8 @@
                         <tr>
                           <th colspan="2" >Material</th>
                           <th>Quantity</th>
-                          <th>Buys</th>
-                          <th>Sells</th>
+                          <th>Buy</th>
+                          <th>Sell</th>
                         </tr>
                       </thead>
                       <tbody>
