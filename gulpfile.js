@@ -13,7 +13,6 @@ const gulp         = require('gulp'),
       autoprefixer = require('autoprefixer'),
       cleanCSS     = require('gulp-clean-css'),
       // JavaScript
-      terser       = require('gulp-terser'),
       webpack      = require('webpack-stream'),
       // BrowserSync
       browserSync  = require('browser-sync'),
