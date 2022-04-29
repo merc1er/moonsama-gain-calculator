@@ -11,8 +11,8 @@ const materials = [{"tokenId": 1, "name":"wood"}, {"tokenId": 2, "name":"stone"}
  * @typedef {Object} MaterialResult
  * @property {number} tokenId - id of token
  * @property {string} name - name of token
- * @property {number} lowestBid
- * @property {number} highestAsk
+ * @property {number} lowestSell
+ * @property {number} highestBuy
  */
 
 /**
@@ -25,8 +25,8 @@ async function getAllMaterialsMovr(){
   for(const material of materials){
     const prom = getMaterialMovr(material.tokenId)
     proms.push(prom)
-    prom.then(({lowestBid, highestAsk})=>{
-      rawResult.push({tokenId: material.tokenId, name: material.name, lowestBid, highestAsk})
+    prom.then(({lowestSell, highestBuy})=>{
+      rawResult.push({tokenId: material.tokenId, name: material.name, lowestSell, highestBuy})
     })
   }
   await Promise.all(proms)
@@ -48,19 +48,19 @@ async function getAllMaterialsMovr(){
 /**
  * Returns the price in MOVR of token
  * @param {number} tokenId
- * @returns {Promise<{bid: number, ask: number}>}
+ * @returns {Promise<{lowestSell: number, highestBuy: number}>}
  */
 async function getMaterialMovr(tokenId){
   const graphqlQuery =
 `query getAssetOrders {
-  bids: orders(where: {active: true, sellAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}"}) {
+  sells: orders(where: {active: true, sellAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}"}) {
     sellAsset {
       id
     }
     askPerUnitNominator
     askPerUnitDenominator
   },
-  asks: orders(where: {active: true, buyAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}"}) {
+  buys: orders(where: {active: true, buyAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}"}) {
     buyAsset {
       id
     }
@@ -83,13 +83,13 @@ async function getMaterialMovr(tokenId){
     body: JSON.stringify({query: graphqlQuery})
   });
   const responseJson = await response.json()
-  const asks = responseJson.data.asks.map(ask => ask.askPerUnitDenominator/ask.askPerUnitNominator).sort((a, b) => a-b)
-  const bids = responseJson.data.bids.map(bid => bid.askPerUnitNominator/bid.askPerUnitDenominator).sort((a, b) => a-b)
+  const buys = responseJson.data.buys.map(buy => buy.askPerUnitDenominator/buy.askPerUnitNominator).sort((a, b) => a-b)
+  const sells = responseJson.data.sells.map(sell => sell.askPerUnitNominator/sell.askPerUnitDenominator).sort((a, b) => a-b)
 
-  const lowestBid = bids.shift()
-  const highestAsk = asks.pop()
+  const lowestSell = sells.shift()
+  const highestBuy = buys.pop()
 
-  return {lowestBid, highestAsk}
+  return {lowestSell, highestBuy}
 }
 
 
@@ -98,29 +98,29 @@ async function getMaterialMovr(tokenId){
  * @param {Dict} resources
  * @param {Dict} prices
  * @param {Float} price of MOVR token in USD: movrPrice
- * @returns {totalAskMovr: number, totalAskUsd: number, totalBidMovr, totalBidUsd}
+ * @returns {totalBuyMovr: number, totalBuyUsd: number, totalSellMovr: number, totalSellUsd: number}
  */
 function getTotal(resources, prices, movrPrice){
-  const woodValueAsk = resources.wood * prices.wood.highestAsk
-  const stoneValueAsk = resources.stone * prices.stone.highestAsk
-  const ironValueAsk = resources.iron * prices.iron.highestAsk
-  const expValueAsk = resources.exp * prices.exp.highestAsk
-  const grainValueAsk = resources.grain * prices.grain.highestAsk
-  const goldValueAsk = resources.gold * prices.gold.highestAsk
+  const woodValueBuy = resources.wood * prices.wood.highestBuy
+  const stoneValueBuy = resources.stone * prices.stone.highestBuy
+  const ironValueBuy = resources.iron * prices.iron.highestBuy
+  const expValueBuy = resources.exp * prices.exp.highestBuy
+  const grainValueBuy = resources.grain * prices.grain.highestBuy
+  const goldValueBuy = resources.gold * prices.gold.highestBuy
 
-  const woodValueBid = resources.wood * prices.wood.lowestBid
-  const stoneValueBid = resources.stone * prices.stone.lowestBid
-  const ironValueBid = resources.iron * prices.iron.lowestBid
-  const expValueBid = resources.exp * prices.exp.lowestBid
-  const grainValueBid = resources.grain * prices.grain.lowestBid
-  const goldValueBid = resources.gold * prices.gold.lowestBid
+  const woodValueSell = resources.wood * prices.wood.lowestSell
+  const stoneValueSell = resources.stone * prices.stone.lowestSell
+  const ironValueSell = resources.iron * prices.iron.lowestSell
+  const expValueSell = resources.exp * prices.exp.lowestSell
+  const grainValueSell = resources.grain * prices.grain.lowestSell
+  const goldValueSell = resources.gold * prices.gold.lowestSell
 
-  const totalAskMovr = woodValueAsk + stoneValueAsk + ironValueAsk + expValueAsk + grainValueAsk + goldValueAsk
-  const totalAskUsd = totalAskMovr * movrPrice
+  const totalBuyMovr = woodValueBuy + stoneValueBuy + ironValueBuy + expValueBuy + grainValueBuy + goldValueBuy
+  const totalBuyUsd = totalBuyMovr * movrPrice
 
-  const totalBidMovr = woodValueBid + stoneValueBid + ironValueBid + expValueBid + grainValueBid + goldValueBid
-  const totalBidUsd = totalBidMovr * movrPrice
-  return {totalAskMovr: totalAskMovr.toFixed(2), totalAskUsd: totalAskUsd.toFixed(2), totalBidMovr: totalBidMovr.toFixed(2), totalBidUsd: totalBidUsd.toFixed(2)}
+  const totalSellMovr = woodValueSell + stoneValueSell + ironValueSell + expValueSell + grainValueSell + goldValueSell
+  const totalSellUsd = totalSellMovr * movrPrice
+  return {totalBuyMovr: totalBuyMovr.toFixed(2), totalBuyUsd: totalBuyUsd.toFixed(2), totalSellMovr: totalSellMovr.toFixed(2), totalSellUsd: totalSellUsd.toFixed(2)}
 }
 
 

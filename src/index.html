@@ -143,7 +143,20 @@
 
                 {# Total USD value #}
                 <div class="flex items-center mt-2 justify-center">
-                  <span x-text="total.totalAskMovr"></span> <img src="/static/img/movr.png" class="h-4 w-4"> (~ $<span x-text="numberWithCommas(total.totalAskUsd)"></span>)
+                  <table class="table-auto w-full text-sm text-left text-gray-800">
+                    <tbody>
+                      <tr>
+                        <td class="w-3/12 font-bold">Buys</td>
+                        <td class="w-5/12" x-text="`${total.totalBuyMovr} MOVR`"></td>
+                        <td class="w-4/12" x-text="`~$${numberWithCommas(total.totalBuyUsd)}`"></td>
+                      </tr>
+                      <tr>
+                        <td class="w-3/12 font-bold">Sells</td>
+                        <td class="w-5/12" x-text="`${total.totalSellMovr} MOVR`"></td>
+                        <td class="w-4/12" x-text="`~$${numberWithCommas(total.totalSellUsd)}`"></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
                 {# /Total USD value #}
 
@@ -159,8 +172,8 @@
                         <tr>
                           <th colspan="2" >Material</th>
                           <th>Quantity</th>
-                          <th>Ask</th>
-                          <th>Bid</th>
+                          <th>Buys</th>
+                          <th>Sells</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -168,50 +181,50 @@
                           <td class="w-1/12">🪵</td>
                           <td class="w-2/12">Wood</td>
                           <td class="w-3/12" x-text="`${parseFloat(resources.wood).toFixed(3)}`"></td>
-                          <td class="w-3/12" x-text="`${(resources.wood * prices.wood.highestAsk).toFixed(3)}`"></td>
-                          <td class="w-3/12" x-text="`${(resources.wood * prices.wood.lowestBid).toFixed(3)}`"></td>
+                          <td class="w-3/12" x-text="`${(resources.wood * prices.wood.highestBuy).toFixed(3)}`"></td>
+                          <td class="w-3/12" x-text="`${(resources.wood * prices.wood.lowestSell).toFixed(3)}`"></td>
                         </tr>
                         <tr>
                           <td>🗿</td>
                           <td>Stone</td>
                           <td x-text="`${parseFloat(resources.stone).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.stone * prices.stone.highestAsk).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.stone * prices.stone.lowestBid).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.stone * prices.stone.highestBuy).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.stone * prices.stone.lowestSell).toFixed(3)}`"></td>
                         </tr>
                         <tr>
                           <td>🪨</td>
                           <td>Iron</td>
                           <td x-text="`${parseFloat(resources.iron).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.iron * prices.iron.highestAsk).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.iron * prices.iron.lowestBid).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.iron * prices.iron.highestBuy).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.iron * prices.iron.lowestSell).toFixed(3)}`"></td>
                         </tr>
                         <tr>
                           <td>🟢</td>
                           <td>Exp</td>
                           <td x-text="`${parseFloat(resources.exp).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.exp * prices.exp.highestAsk).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.exp * prices.exp.lowestBid).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.exp * prices.exp.highestBuy).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.exp * prices.exp.lowestSell).toFixed(3)}`"></td>
                         </tr>
                         <tr>
                           <td>🌾</td>
                           <td>Grain</td>
                           <td x-text="`${parseFloat(resources.grain).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.grain * prices.grain.highestAsk).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.grain * prices.grain.lowestBid).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.grain * prices.grain.highestBuy).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.grain * prices.grain.lowestSell).toFixed(3)}`"></td>
                         </tr>
                         <tr>
                           <td>🥇</td>
                           <td>Gold</td>
                           <td x-text="`${parseFloat(resources.gold).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.gold * prices.gold.highestAsk).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.gold * prices.gold.lowestBid).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.gold * prices.gold.highestBuy).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.gold * prices.gold.lowestSell).toFixed(3)}`"></td>
                         </tr>
                         <tr>
                           <td></td>
                           <td></td>
                           <td x-text="`Total`"></td>
-                          <td x-text="`$${numberWithCommas(total.totalAskUsd)}`"></td>
-                          <td x-text="`$${numberWithCommas(total.totalBidUsd)}`"></td>
+                          <td x-text="`$${numberWithCommas(total.totalBuyUsd)}`"></td>
+                          <td x-text="`$${numberWithCommas(total.totalSellUsd)}`"></td>
                         </tr>
                       </tbody>
                     </table>
