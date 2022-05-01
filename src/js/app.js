@@ -132,7 +132,8 @@ function getTotal(resources, prices, movrPrice){
  * @returns {String}
  */
 function formatDate(date){
-  const options = {year: 'numeric', month: 'long', day: 'numeric'}
+  //keep time zone in UTC so date shows carnage dates as reflected on moonsama website
+  const options = {year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC'}
   return new Date(date).toLocaleDateString("en-GB", options)
 }
 
@@ -150,8 +151,8 @@ function formatDateApi(date){
  * @returns {number[]}
  */
 function carnageDates() {
-  //2022-04-03 first date that carnage api has
-  const carnageStartTime = 1648947601000;
+  //2022-04-03 first date that carnage api has, game finishes at 6pm UTC
+  const carnageStartTime = 1649008800000;
   let carnageTime = carnageStartTime
   const nowTime = new Date().getTime()
   const dates = [carnageTime];
