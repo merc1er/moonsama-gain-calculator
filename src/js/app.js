@@ -53,14 +53,14 @@ async function getAllMaterialsMovr(){
 async function getMaterialMovr(tokenId){
   const graphqlQuery =
 `query getAssetOrders {
-  sells: orders(where: {active: true, sellAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}"}) {
+  sells: orders(where: {active: true, sellAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}", onlyTo: "0x0000000000000000000000000000000000000000"}, orderBy: pricePerUnit, orderDirection: asc, skip: 0, first: 1) {
     sellAsset {
       id
     }
     askPerUnitNominator
     askPerUnitDenominator
   },
-  buys: orders(where: {active: true, buyAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}"}) {
+  buys: orders(where: {active: true, buyAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}"}, orderBy: pricePerUnit, orderDirection: desc, skip: 0, first: 1) {
     buyAsset {
       id
     }
@@ -69,7 +69,7 @@ async function getMaterialMovr(tokenId){
   }
 }`
 
-  const fetchUrl = "https://moonriver-subgraph.moonsama.com/subgraphs/name/moonsama/marketplacev4"
+  const fetchUrl = "https://moonriver-subgraph.moonsama.com/subgraphs/name/moonsama/marketplacev5"
   const response = await fetch(fetchUrl, {
     method: 'POST',
     mode: 'cors',
