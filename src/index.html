@@ -206,6 +206,13 @@
                           <td x-text="`${(resources.gold * prices.gold.highestBuy).toFixed(3)}`"></td>
                           <td x-text="`${(resources.gold * prices.gold.lowestSell).toFixed(3)}`"></td>
                         </tr>
+                        <tr x-show="!isNaN(parseFloat(resources.string))">
+                          <td><img src="/static/img/string.png" alt="string"></td>
+                          <td>String</td>
+                          <td x-text="`${parseFloat(resources.string).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.string * prices.string.highestBuy).toFixed(3)}`"></td>
+                          <td x-text="`${(resources.string * prices.string.lowestSell).toFixed(3)}`"></td>
+                        </tr>
                         <tr>
                           <td></td>
                           <td class='font-bold'>Total</td>

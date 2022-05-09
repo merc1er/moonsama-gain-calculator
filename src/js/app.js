@@ -107,7 +107,6 @@ function getTotal(resources, prices, movrPrice){
     if(resources.hasOwnProperty(name) && !isNaN(parseFloat(resources[name]))){
       totalBuyMovr+= resources[name] * prices[name].highestBuy
       totalSellMovr+= resources[name] * prices[name].lowestSell
-
     }
   }
 
