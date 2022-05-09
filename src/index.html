@@ -7,10 +7,8 @@
 <link rel="preload" as="image" href="/static/img/exp.png" />
 <link rel="preload" as="image" href="/static/img/grain.png" />
 <link rel="preload" as="image" href="/static/img/gold.png" />
-<section
-  class="w-full px-8"
-  x-data="{ username: '', resources: '', openTab: 1, showResults: false, load: false, prices: '', total: { totalBuyUsd: 0 }, caclulateError: '' }"
->
+<section class="w-full px-8"
+  x-data="{ username: '', resources: '', openTab: 1, showResults: false, load: false, prices: '', total: { totalBuyUsd: 0 }, caclulateError: '' }">
   <div class="max-w-5xl mx-auto">
 
     <!-- Title -->
@@ -37,9 +35,7 @@
       <!-- /Tab selector -->
 
       <!-- Form content -->
-      <div
-        class="card-form"
-        x-data="{ weekSelectorOpen: false, selectedDate: carnageDates()[0], calculate: async function(){
+      <div class="card-form" x-data="{ weekSelectorOpen: false, selectedDate: carnageDates()[0], calculate: async function(){
                   this.caclulateError = ''
                   this.showResults = false
                   this.load = true
@@ -72,8 +68,7 @@
                   this.showResults = true
                   this.caclulateError = ''
                   this.load = false
-              }}"
-      >
+              }}">
         <div class="w-full">
           <!-- By User Tab -->
           <div x-show="openTab === 1" x-transition.duration.0ms>
@@ -85,15 +80,10 @@
               <label id="listbox-label" class="block text-sm font-medium text-gray-700">Carnage event date</label>
               <div class="mt-1 relative">
                 {# Week main input #}
-                <button
-                  type="button"
+                <button type="button"
                   class="relative w-full bg-white cursor-pointer border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
-                  aria-haspopup="listbox"
-                  aria-expanded="true"
-                  aria-labelledby="listbox-label"
-                  @click="weekSelectorOpen = !weekSelectorOpen"
-                  @click.away="weekSelectorOpen = false"
-                >
+                  aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label"
+                  @click="weekSelectorOpen = !weekSelectorOpen" @click.away="weekSelectorOpen = false">
                   <span class="flex items-center">
                     <span class="block truncate" x-text="formatDate(selectedDate)"></span>
                   </span>
@@ -103,7 +93,9 @@
                 </button>
                 {# /Week main input #}
 
-                <ul class="selector-ul" tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3" x-show="weekSelectorOpen" x-data="{carnageDates: carnageDates()}">
+                <ul class="selector-ul" tabindex="-1" role="listbox" aria-labelledby="listbox-label"
+                  aria-activedescendant="listbox-option-3" x-show="weekSelectorOpen"
+                  x-data="{carnageDates: carnageDates()}">
 
                   <template x-for="carnageDate in carnageDates" :key="carnageDate">
                     <li @click="selectedDate = carnageDate">
@@ -120,18 +112,16 @@
 
             <!-- Username input -->
             <div class="my-4">
-              <input @keyup.enter="calculate()" type="text" x-model="username" autocorrect="off" autocapitalize="off" spellcheck="false" name="minecraftname" class="input" placeholder="Minecraft name">
+              <input @keyup.enter="calculate()" type="text" x-model="username" autocorrect="off" autocapitalize="off"
+                spellcheck="false" name="minecraftname" class="input" placeholder="Minecraft name">
               <div x-show="caclulateError">
                 <div class="text-center text-red-700" x-text='caclulateError'></div>
               </div>
             </div>
 
             <div class="block">
-              <button
-                class="w-full px-3 py-4 font-medium text-white bg-blue-600 rounded-lg"
-                x-on:click="calculate()"
-                x-bind:disabled="load"
-              >
+              <button class="w-full px-3 py-4 font-medium text-white bg-blue-600 rounded-lg" x-on:click="calculate()"
+                x-bind:disabled="load">
                 <span x-show="!load">Calculate</span>
                 <template x-if='load'>
                   <span>{% include "icons/loader.svg" %}</span>
@@ -149,7 +139,8 @@
 
                 {# Total USD value #}
                 <div class="flex items-center mt-2 justify-center">
-                  <span x-text="total.totalBuyMovr"></span> <img src="/static/img/movr.png" class="h-4 w-4"> (~ $<span x-text="numberWithCommas(total.totalBuyUsd)"></span>)
+                  <span x-text="total.totalBuyMovr"></span> <img src="/static/img/movr.png" class="h-4 w-4"> (~ $<span
+                    x-text="numberWithCommas(total.totalBuyUsd)"></span>)
                 </div>
                 {# /Total USD value #}
 
@@ -163,7 +154,7 @@
                     <table class="table-auto w-full text-sm text-left text-gray-800">
                       <thead>
                         <tr>
-                          <th colspan="2" >Material</th>
+                          <th colspan="2">Material</th>
                           <th>
                             <span class="hidden sm:block">Quantity</span>
                             <span class="sm:hidden">Qty</span>
@@ -173,42 +164,42 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
+                        <tr x-show="!isNaN(parseFloat(resources.wood))">
                           <td class="w-1/12"><img src="/static/img/wood.png" alt="wood"></td>
                           <td class="w-2/12">Wood</td>
                           <td class="w-3/12" x-text="`${parseFloat(resources.wood).toFixed(3)}`"></td>
                           <td class="w-3/12" x-text="`${(resources.wood * prices.wood.highestBuy).toFixed(3)}`"></td>
                           <td class="w-3/12" x-text="`${(resources.wood * prices.wood.lowestSell).toFixed(3)}`"></td>
                         </tr>
-                        <tr>
+                        <tr x-show="!isNaN(parseFloat(resources.stone))">
                           <td><img src="/static/img/stone.png" alt="stone"></td>
                           <td>Stone</td>
                           <td x-text="`${parseFloat(resources.stone).toFixed(3)}`"></td>
                           <td x-text="`${(resources.stone * prices.stone.highestBuy).toFixed(3)}`"></td>
                           <td x-text="`${(resources.stone * prices.stone.lowestSell).toFixed(3)}`"></td>
                         </tr>
-                        <tr>
+                        <tr x-show="!isNaN(parseFloat(resources.iron))">
                           <td><img src="/static/img/iron.png" alt="iron"></td>
                           <td>Iron</td>
                           <td x-text="`${parseFloat(resources.iron).toFixed(3)}`"></td>
                           <td x-text="`${(resources.iron * prices.iron.highestBuy).toFixed(3)}`"></td>
                           <td x-text="`${(resources.iron * prices.iron.lowestSell).toFixed(3)}`"></td>
                         </tr>
-                        <tr>
+                        <tr x-show="!isNaN(parseFloat(resources.exp))">
                           <td><img src="/static/img/exp.png" alt="exp"></td>
                           <td>Exp</td>
                           <td x-text="`${parseFloat(resources.exp).toFixed(3)}`"></td>
                           <td x-text="`${(resources.exp * prices.exp.highestBuy).toFixed(3)}`"></td>
                           <td x-text="`${(resources.exp * prices.exp.lowestSell).toFixed(3)}`"></td>
                         </tr>
-                        <tr>
+                        <tr x-show="!isNaN(parseFloat(resources.grain))">
                           <td><img src="/static/img/grain.png" alt="grain"></td>
                           <td>Grain</td>
                           <td x-text="`${parseFloat(resources.grain).toFixed(3)}`"></td>
                           <td x-text="`${(resources.grain * prices.grain.highestBuy).toFixed(3)}`"></td>
                           <td x-text="`${(resources.grain * prices.grain.lowestSell).toFixed(3)}`"></td>
                         </tr>
-                        <tr>
+                        <tr x-show="!isNaN(parseFloat(resources.gold))">
                           <td><img src="/static/img/gold.png" alt="gold"></td>
                           <td>Gold</td>
                           <td x-text="`${parseFloat(resources.gold).toFixed(3)}`"></td>
@@ -233,7 +224,9 @@
                     </table>
 
                     <div class="text-center text-xs mt-2">
-                      <a class="btn-link" href="https://marketplace.moonsama.com/collection/ERC1155/0x1b30a3b5744e733d8d2f19f0812e3f79152a8777/0" target="_blank">Price data from Moonsama</a>
+                      <a class="btn-link"
+                        href="https://marketplace.moonsama.com/collection/ERC1155/0x1b30a3b5744e733d8d2f19f0812e3f79152a8777/0"
+                        target="_blank">Price data from Moonsama</a>
                     </div>
                   </div>
                 </template>
@@ -249,22 +242,34 @@
           <div class="" x-show="openTab === 2" x-transition.duration.0ms>
             <h3 class="mb-6 text-2xl font-medium text-center">Input your resources</h3>
             <!-- wood -->
-            <input type="number" name="wood" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Wood 🪵">
+            <input type="number" name="wood"
+              class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+              placeholder="Wood 🪵">
 
             <!-- stone -->
-            <input type="number" name="stone" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Stone 🪨">
+            <input type="number" name="stone"
+              class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+              placeholder="Stone 🪨">
 
             <!-- iron -->
-            <input type="number" name="iron" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Iron 🪙">
+            <input type="number" name="iron"
+              class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+              placeholder="Iron 🪙">
 
             <!-- exp -->
-            <input type="number" name="exp" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Exp 🟢">
+            <input type="number" name="exp"
+              class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+              placeholder="Exp 🟢">
 
             <!-- grain -->
-            <input type="number" name="grain" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Grain 🌾">
+            <input type="number" name="grain"
+              class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+              placeholder="Grain 🌾">
 
             <!-- gold -->
-            <input type="number" name="gold" class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none" placeholder="Gold 🥇">
+            <input type="number" name="gold"
+              class="block w-full bg-gray-100 px-4 py-3 mb-4 border border-2 border-transparent border-gray-200 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+              placeholder="Gold 🥇">
 
             <div class="block">
               <button class="w-full px-3 py-4 font-medium text-white bg-blue-600 rounded-lg">Calculate</button>

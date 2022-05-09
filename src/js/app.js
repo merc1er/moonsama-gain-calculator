@@ -101,24 +101,17 @@ async function getMaterialMovr(tokenId){
  * @returns {totalBuyMovr: number, totalBuyUsd: number, totalSellMovr: number, totalSellUsd: number}
  */
 function getTotal(resources, prices, movrPrice){
-  const woodValueBuy = resources.wood * prices.wood.highestBuy
-  const stoneValueBuy = resources.stone * prices.stone.highestBuy
-  const ironValueBuy = resources.iron * prices.iron.highestBuy
-  const expValueBuy = resources.exp * prices.exp.highestBuy
-  const grainValueBuy = resources.grain * prices.grain.highestBuy
-  const goldValueBuy = resources.gold * prices.gold.highestBuy
+  let totalBuyMovr = 0
+  let totalSellMovr = 0
+  for(const {tokenId, name} of materials){
+    if(resources.hasOwnProperty(name) && !isNaN(parseFloat(resources[name]))){
+      totalBuyMovr+= resources[name] * prices[name].highestBuy
+      totalSellMovr+= resources[name] * prices[name].lowestSell
 
-  const woodValueSell = resources.wood * prices.wood.lowestSell
-  const stoneValueSell = resources.stone * prices.stone.lowestSell
-  const ironValueSell = resources.iron * prices.iron.lowestSell
-  const expValueSell = resources.exp * prices.exp.lowestSell
-  const grainValueSell = resources.grain * prices.grain.lowestSell
-  const goldValueSell = resources.gold * prices.gold.lowestSell
+    }
+  }
 
-  const totalBuyMovr = woodValueBuy + stoneValueBuy + ironValueBuy + expValueBuy + grainValueBuy + goldValueBuy
   const totalBuyUsd = totalBuyMovr * movrPrice
-
-  const totalSellMovr = woodValueSell + stoneValueSell + ironValueSell + expValueSell + grainValueSell + goldValueSell
   const totalSellUsd = totalSellMovr * movrPrice
   return {totalBuyMovr: totalBuyMovr.toFixed(2), totalBuyUsd: totalBuyUsd.toFixed(2), totalSellMovr: totalSellMovr.toFixed(2), totalSellUsd: totalSellUsd.toFixed(2)}
 }
