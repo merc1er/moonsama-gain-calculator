@@ -152,41 +152,39 @@
                 {# Detailed view table #}
                 <template x-if="detailedView">
                   <div>
-                    <table class="table-auto w-full text-sm text-left text-gray-800">
+                    <table class="table-auto w-full text-xs text-left text-gray-800">
                       <thead>
                         <tr>
                           <th colspan="2">Material</th>
-                          <th>
-                            <span class="hidden sm:block">Quantity</span>
-                            <span class="sm:hidden">Qty</span>
-                          </th>
-                          <th>Buy</th>
-                          <th>Sell</th>
+                          <th class='text-right'>Quantity</th>
+                          <th class='text-right'>Buy</th>
+                          <th class='text-right'>Sell</th>
                         </tr>
                       </thead>
                       <tbody>
                         <template x-for="resource in getValidResources(resources)" :key="resource">
                           <tr x-show="!isNaN(parseFloat(resources.wood))" x-data='{capitalizedResource: resource.trim().toLowerCase().replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))}'>
-                            <td class="w-1/12"><img :src="`/static/img/${resource}.png`" :alt="capitalizedResource" :title='capitalizedResource'></td>
+                            <td class="w-1/12">
+                              <img class='h-4' :src="`/static/img/${resource}.png`" :alt="capitalizedResource" :title='capitalizedResource'></td>
                             <td class="w-2/12" x-text='capitalizedResource'></td>
-                            <td class="w-3/12" x-text="`${parseFloat(resources[resource]).toFixed(3)}`"></td>
-                            <td class="w-3/12" x-text="`${(resources[resource] * prices[resource].highestBuy).toFixed(3)}`"></td>
-                            <td class="w-3/12" x-text="`${(resources[resource] * prices[resource].lowestSell).toFixed(3)}`"></td>
+                            <td class="w-3/12 text-right font-mono" x-text="`${parseFloat(resources[resource]).toFixed(3)}`"></td>
+                            <td class="w-3/12 text-right font-mono" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].highestBuy).toFixed(3) : ''"></td>
+                            <td class="w-3/12 text-right font-mono" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].lowestSell).toFixed(3) : ''"></td>
                           </tr>
                         </template>
                         <tr>
                           <td></td>
-                          <td class='font-bold'>Total</td>
-                          <td>MOVR</td>
-                          <td x-text="total.totalBuyMovr"></td>
-                          <td x-text="total.totalSellMovr"></td>
+                          <td class='font-bold text-righ'>Total</td>
+                          <td class='text-right'>MOVR</td>
+                          <td class='text-right font-mono' x-text="total.totalBuyMovr"></td>
+                          <td class='text-right font-mono' x-text="total.totalSellMovr"></td>
                         </tr>
                         <tr>
                           <td></td>
                           <td></td>
-                          <td>USD</td>
-                          <td x-text="`$${numberWithCommas(total.totalBuyUsd)}`"></td>
-                          <td x-text="`$${numberWithCommas(total.totalSellUsd)}`"></td>
+                          <td class='text-right'>USD</td>
+                          <td class='text-right font-mono' x-text="`$${numberWithCommas(total.totalBuyUsd)}`"></td>
+                          <td class='text-right font-mono' x-text="`$${numberWithCommas(total.totalSellUsd)}`"></td>
                         </tr>
                       </tbody>
                     </table>

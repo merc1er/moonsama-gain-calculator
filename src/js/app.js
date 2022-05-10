@@ -112,7 +112,7 @@ function getTotal(resources, prices, movrPrice){
 
   const totalBuyUsd = totalBuyMovr * movrPrice
   const totalSellUsd = totalSellMovr * movrPrice
-  return {totalBuyMovr: totalBuyMovr.toFixed(2), totalBuyUsd: totalBuyUsd.toFixed(2), totalSellMovr: totalSellMovr.toFixed(2), totalSellUsd: totalSellUsd.toFixed(2)}
+  return {totalBuyMovr: totalBuyMovr.toFixed(3), totalBuyUsd: totalBuyUsd.toFixed(2), totalSellMovr: totalSellMovr.toFixed(3), totalSellUsd: totalSellUsd.toFixed(2)}
 }
 
 
