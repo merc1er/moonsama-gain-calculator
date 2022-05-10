@@ -169,6 +169,21 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+/**
+ * Gets valid resources
+ * @param {Object}
+ * @returns {String[]}
+ */
+function getValidResources(resources) {
+  const validResources = []
+    for(const [resource, value] of Object.entries(resources)){
+      if(!isNaN(parseFloat(value))){
+        validResources.push(resource)
+      }
+    }
+    return validResources.sort()
+}
+
 // Make the following functions accessible from AlpineJS
 window.getAllMaterialsMovr = getAllMaterialsMovr
 //load material quote on page load
@@ -183,7 +198,7 @@ window.formatDate = formatDate
 window.formatDateApi = formatDateApi
 window.carnageDates = carnageDates
 window.numberWithCommas = numberWithCommas
-
+window.getValidResources = getValidResources
 // Load Alpine
 window.Alpine = Alpine
 Alpine.start()

@@ -165,55 +165,15 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr x-show="!isNaN(parseFloat(resources.wood))">
-                          <td class="w-1/12"><img src="/static/img/wood.png" alt="wood"></td>
-                          <td class="w-2/12">Wood</td>
-                          <td class="w-3/12" x-text="`${parseFloat(resources.wood).toFixed(3)}`"></td>
-                          <td class="w-3/12" x-text="`${(resources.wood * prices.wood.highestBuy).toFixed(3)}`"></td>
-                          <td class="w-3/12" x-text="`${(resources.wood * prices.wood.lowestSell).toFixed(3)}`"></td>
-                        </tr>
-                        <tr x-show="!isNaN(parseFloat(resources.stone))">
-                          <td><img src="/static/img/stone.png" alt="stone"></td>
-                          <td>Stone</td>
-                          <td x-text="`${parseFloat(resources.stone).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.stone * prices.stone.highestBuy).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.stone * prices.stone.lowestSell).toFixed(3)}`"></td>
-                        </tr>
-                        <tr x-show="!isNaN(parseFloat(resources.iron))">
-                          <td><img src="/static/img/iron.png" alt="iron"></td>
-                          <td>Iron</td>
-                          <td x-text="`${parseFloat(resources.iron).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.iron * prices.iron.highestBuy).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.iron * prices.iron.lowestSell).toFixed(3)}`"></td>
-                        </tr>
-                        <tr x-show="!isNaN(parseFloat(resources.exp))">
-                          <td><img src="/static/img/exp.png" alt="exp"></td>
-                          <td>Exp</td>
-                          <td x-text="`${parseFloat(resources.exp).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.exp * prices.exp.highestBuy).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.exp * prices.exp.lowestSell).toFixed(3)}`"></td>
-                        </tr>
-                        <tr x-show="!isNaN(parseFloat(resources.grain))">
-                          <td><img src="/static/img/grain.png" alt="grain"></td>
-                          <td>Grain</td>
-                          <td x-text="`${parseFloat(resources.grain).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.grain * prices.grain.highestBuy).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.grain * prices.grain.lowestSell).toFixed(3)}`"></td>
-                        </tr>
-                        <tr x-show="!isNaN(parseFloat(resources.gold))">
-                          <td><img src="/static/img/gold.png" alt="gold"></td>
-                          <td>Gold</td>
-                          <td x-text="`${parseFloat(resources.gold).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.gold * prices.gold.highestBuy).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.gold * prices.gold.lowestSell).toFixed(3)}`"></td>
-                        </tr>
-                        <tr x-show="!isNaN(parseFloat(resources.string))">
-                          <td><img src="/static/img/string.png" alt="string"></td>
-                          <td>String</td>
-                          <td x-text="`${parseFloat(resources.string).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.string * prices.string.highestBuy).toFixed(3)}`"></td>
-                          <td x-text="`${(resources.string * prices.string.lowestSell).toFixed(3)}`"></td>
-                        </tr>
+                        <template x-for="resource in getValidResources(resources)" :key="resource">
+                          <tr x-show="!isNaN(parseFloat(resources.wood))" x-data='{capitalizedResource: resource.trim().toLowerCase().replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))}'>
+                            <td class="w-1/12"><img :src="`/static/img/${resource}.png`" :alt="capitalizedResource" :title='capitalizedResource'></td>
+                            <td class="w-2/12" x-text='capitalizedResource'></td>
+                            <td class="w-3/12" x-text="`${parseFloat(resources[resource]).toFixed(3)}`"></td>
+                            <td class="w-3/12" x-text="`${(resources[resource] * prices[resource].highestBuy).toFixed(3)}`"></td>
+                            <td class="w-3/12" x-text="`${(resources[resource] * prices[resource].lowestSell).toFixed(3)}`"></td>
+                          </tr>
+                        </template>
                         <tr>
                           <td></td>
                           <td class='font-bold'>Total</td>
