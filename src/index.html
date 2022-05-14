@@ -73,7 +73,7 @@
               }}">
         <div class="w-full">
           <!-- By User Tab -->
-          <div x-show="openTab === 1" x-transition.duration.0ms>
+          <div x-show="openTab === 1" x-transition.duration.0ms class="pb-4">
 
             <img src="/static/img/minecraft.png" alt="Minecraft characters" class="h-44 mx-auto">
 
@@ -116,8 +116,8 @@
             <div class="my-4">
               <input @keyup.enter="calculate()" type="text" x-model="username" autocorrect="off" autocapitalize="off"
                 spellcheck="false" name="minecraftname" class="input" placeholder="Minecraft name">
-              <div x-show="caclulateError">
-                <div class="text-center text-red-700" x-text='caclulateError'></div>
+              <div x-show="caclulateError" class="rounded-md bg-red-300 mt-3 border-red-800 border-2">
+                <div class="text-left text-red-800 p-2" x-text='caclulateError'></div>
               </div>
             </div>
 
