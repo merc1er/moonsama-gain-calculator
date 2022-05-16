@@ -139,22 +139,18 @@
               <!-- <ul x-for="resource in resources">
                 <li x-text="resource"></li>
               </ul> -->
-              <div class="mt-2 w-full mt-4" x-data="{ detailedView: false }">
-                <div class="text-center text-lg font-bold">Total value of your resources</div>
+              <div class="mt-2 w-full mt-4">
+                <div class="text-center text-lg font-bold"><span>Total for&nbsp;</span><span x-text="resources.player"></span></div>
 
                 {# Total USD value #}
-                <div class="flex items-center mt-2 justify-center">
+                <div class="flex items-center mt-2 justify-center mb-2">
                   <span x-text="total.totalBuyMovr"></span> <img src="/static/img/movr.png" class="h-4 w-4"> (~ $<span
                     x-text="numberWithCommas(total.totalBuyUsd)"></span>)
                 </div>
                 {# /Total USD value #}
 
-                <div class="text-center my-2">
-                  <div class="btn-link" @click="detailedView = !detailedView">Detailed view</div>
-                </div>
-
                 {# Detailed view table #}
-                <template x-if="detailedView">
+                <template x-if="showResults && resources.player">
                   <div class="flex text-xs w-full overflow-auto">
 
                     <div class="flex-none w-4 sm:w-16 ">
