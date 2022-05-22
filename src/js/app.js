@@ -4,7 +4,7 @@ import Alpine from 'alpinejs'
 https://moonsama.com/token/ERC1155/0x1b30a3b5744e733d8d2f19f0812e3f79152a8777/10
 ^token id is last part of URL
 */
-const materials = [{"tokenId": 1, "name":"wood"}, {"tokenId": 2, "name":"stone"}, {"tokenId": 3, "name":"iron"}, {"tokenId": 4, "name":"gold"}, {"tokenId": 5, "name":"experience"}, {"tokenId": 10, "name":"grain"}, {"tokenId": 12, "name":"string"}]
+const materials = [{"tokenId": 1, "name":"wood"}, {"tokenId": 2, "name":"stone"}, {"tokenId": 3, "name":"iron"}, {"tokenId": 4, "name":"gold"}, {"tokenId": 5, "name":"experience"}, {"tokenId": 10, "name":"grain"}, {"tokenId": 12, "name":"string"}, {"tokenId": 13, "name":"fish"}]
 
 
 /**
@@ -41,6 +41,7 @@ async function getAllMaterialsMovr(){
     exp: rawResult[4],
     grain: rawResult[5],
     string: rawResult[6],
+    fish: rawResult[7],
   }
   return result
 }
@@ -87,9 +88,15 @@ async function getMaterialMovr(tokenId){
   const buys = responseJson.data.buys.map(buy => buy.askPerUnitDenominator/buy.askPerUnitNominator).sort((a, b) => a-b)
   const sells = responseJson.data.sells.map(sell => sell.askPerUnitNominator/sell.askPerUnitDenominator).sort((a, b) => a-b)
 
-  const lowestSell = sells.shift()
-  const highestBuy = buys.pop()
+  let lowestSell = sells.shift()
+  let highestBuy = buys.pop()
 
+  if(isNaN(lowestSell)){
+    lowestSell = 0
+  }
+  if(isNaN(highestBuy)){
+    highestBuy = 0
+  }
   return {lowestSell, highestBuy}
 }
 
