@@ -8,7 +8,7 @@
 <link rel="preload" as="image" href="/static/img/grain.png" />
 <link rel="preload" as="image" href="/static/img/gold.png" />
 <link rel="preload" as="image" href="/static/img/string.png" />
-<link rel="preload" as="image" href="/static/img/fish.png" />
+<link rel="preload" as="image" href="/static/img/fish_specimen.png" />
 <section class="w-full px-2 sm:px-8"
   x-data="{ username: '', resources: '', openTab: 1, showResults: false, load: false, prices: '', total: { totalBuyUsd: 0 }, caclulateError: '' }">
   <div class="max-w-5xl mx-auto">
@@ -158,11 +158,11 @@
                       <div class="font-bold invisible sm:visible">Resource</div>
 
                      <template x-for="(resource, index) in getValidResources(resources)" :key="resource">
-                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="flex" x-data='{capitalizedResource: resource.trim().toLowerCase().replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))}'>
+                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="flex" x-data='{prettifiedResource: prettifyResource(resource)}'>
                           <div class="w-4 flex-none">
-                            <img :src="`/static/img/${resource}.png`" :alt="capitalizedResource" :title='capitalizedResource'></td>
+                            <img :src="`/static/img/${resource}.png`" :alt="prettifiedResource" :title='prettifiedResource'></td>
                           </div>
-                          <div class="w-12 flex-none pl-2 invisible sm:visible" x-text='capitalizedResource'></div>
+                          <div class="w-12 flex-none pl-2 invisible sm:visible" x-text='prettifiedResource'></div>
                         
                         </div>
                       </template>
@@ -180,7 +180,7 @@
                     <div class="flex-1 text-right">
                       <div class="font-bold">Buy</div>
                       <template x-for="(resource, index) in getValidResources(resources)" :key="resource">
-                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 flex-1 text-right" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].highestBuy).toFixed(3) : ''"></div>
+                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 flex-1 text-right" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].highestBuy).toFixed(3) : '-'"></div>
                       </template>
                       <div class="font-mono pl-2 ml-1 flex-1 text-right border-t-2" x-text="total.totalBuyMovr"></div>
                       <div class="font-mono pl-2 flex-1 text-right" x-text="`$${numberWithCommas(total.totalBuyUsd)}`"></div>                
@@ -188,7 +188,7 @@
                     <div class="flex-1 text-right">
                       <div class="font-bold pr-1">Sell</div>
                       <template x-for="(resource, index) in getValidResources(resources)" :key="resource">
-                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 pr-1 flex-1 text-right" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].lowestSell).toFixed(3) : ''"></div>
+                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 pr-1 flex-1 text-right" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].lowestSell).toFixed(3) : '-'"></div>
                       </template>
                       <div class="font-mono pl-2 pr-1 flex-1 text-right border-t-2" x-text="total.totalSellMovr"></div>
                       <div class="font-mono pl-2 pr-1 flex-1 text-right" x-text="`$${numberWithCommas(total.totalSellUsd)}`"></div>                

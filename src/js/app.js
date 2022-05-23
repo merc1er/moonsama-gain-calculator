@@ -4,7 +4,7 @@ import Alpine from 'alpinejs'
 https://moonsama.com/token/ERC1155/0x1b30a3b5744e733d8d2f19f0812e3f79152a8777/10
 ^token id is last part of URL
 */
-const materials = [{"tokenId": 1, "name":"wood"}, {"tokenId": 2, "name":"stone"}, {"tokenId": 3, "name":"iron"}, {"tokenId": 4, "name":"gold"}, {"tokenId": 5, "name":"experience"}, {"tokenId": 10, "name":"grain"}, {"tokenId": 12, "name":"string"}, {"tokenId": 13, "name":"fish"}]
+const materials = [{"tokenId": 1, "name":"wood"}, {"tokenId": 2, "name":"stone"}, {"tokenId": 3, "name":"iron"}, {"tokenId": 4, "name":"gold"}, {"tokenId": 5, "name":"experience"}, {"tokenId": 10, "name":"grain"}, {"tokenId": 12, "name":"string"}, {"tokenId": 13, "name":"fish_specimen"}]
 
 
 /**
@@ -41,7 +41,7 @@ async function getAllMaterialsMovr(){
     exp: rawResult[4],
     grain: rawResult[5],
     string: rawResult[6],
-    fish: rawResult[7],
+    fish_specimen: rawResult[7],
   }
   return result
 }
@@ -146,6 +146,21 @@ function formatDateApi(date){
   return new Date(date).toISOString().split('T')[0]
 }
 
+/**
+ * Capitalize and rename resources for human friendly display
+ * @param {String}
+ * @returns {String}
+ */
+function prettifyResource(resource){
+  let res = resource
+
+  if(res === "fish_specimen"){
+    res = "fish"
+  }
+
+  return res.trim().toLowerCase().replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))
+}
+
 
 /**
  * @returns {number[]}
@@ -207,6 +222,7 @@ window.formatDateApi = formatDateApi
 window.carnageDates = carnageDates
 window.numberWithCommas = numberWithCommas
 window.getValidResources = getValidResources
+window.prettifyResource = prettifyResource
 // Load Alpine
 window.Alpine = Alpine
 Alpine.start()
