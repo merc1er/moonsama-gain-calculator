@@ -167,7 +167,7 @@ function prettifyResource(resource){
  */
 function carnageDates() {
   //2022-04-03 first date that carnage api has, game finishes at 6pm UTC
-  const carnageStartTime = 1649008800000;
+  const carnageStartTime = 1649008800000
   let carnageTime = carnageStartTime
   const nowTime = new Date().getTime()
   const dates = [carnageTime];

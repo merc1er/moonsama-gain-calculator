@@ -58,18 +58,12 @@
                     this.prices = results[1]
                     this.total = getTotal(this.resources, this.prices, this.movrPrice)
 
-                    if (!this.resources.player){
-                      throw new Error('User not found')
+                    if(this.resources.error){
+                      throw new Error(this.resources.error)
                     }
 
                   }catch(e){
                      let errStr = e.toString()
-
-                     const timeSinceCarnageEnded = new Date().getTime() - this.selectedDate
-                     //carnage ended within 3 hours and http 500, show warning that result probably not ready
-                     if(timeSinceCarnageEnded > 0 && timeSinceCarnageEnded < 1000 * 60 * 60 * 3 && errStr.includes('The string did not match the expected pattern')){
-                      errStr = 'Results probably not ready'
-                     }
                      this.caclulateError = errStr
                      this.showResults = false
                      this.load = false
