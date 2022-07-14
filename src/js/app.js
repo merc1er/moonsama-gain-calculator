@@ -4,7 +4,7 @@ import Alpine from 'alpinejs'
 https://moonsama.com/token/ERC1155/0x1b30a3b5744e733d8d2f19f0812e3f79152a8777/10
 ^token id is last part of URL
 */
-const materials = [{"tokenId": 1, "name":"wood"}, {"tokenId": 2, "name":"stone"}, {"tokenId": 3, "name":"iron"}, {"tokenId": 4, "name":"gold"}, {"tokenId": 5, "name":"experience"}, {"tokenId": 10, "name":"grain"}, {"tokenId": 12, "name":"string"}, {"tokenId": 13, "name":"fish_specimen"}]
+const materials = [{"tokenId": 1, "name":"wood"}, {"tokenId": 2, "name":"stone"}, {"tokenId": 3, "name":"iron"}, {"tokenId": 4, "name":"gold"}, {"tokenId": 5, "name":"experience"}, {"tokenId": 10, "name":"grain"}, {"tokenId": 12, "name":"string"}, {"tokenId": 13, "name":"fish_specimen"}, {"tokenId": 16, "name": "moonstone"}]
 
 
 /**
@@ -42,6 +42,7 @@ async function getAllMaterialsMovr(){
     grain: rawResult[5],
     string: rawResult[6],
     fish_specimen: rawResult[7],
+    moonstone: rawResult[8]
   }
   return result
 }
