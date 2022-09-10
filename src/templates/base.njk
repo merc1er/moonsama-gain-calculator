@@ -66,27 +66,15 @@
               <span
                 class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium mr-2" id="movrPrice"
                 x-init="
-                  response = await fetch('https://api.zenlink.pro/rpc', {
-                    method: 'POST',
+                  response = await fetch('https://api.manager.artatol.net/utils/dailysama-tickers', {
+                    method: 'GET',
                     headers: {
                       'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                      'id': 0,
-                      'jsonrpc': '2.0',
-                      'method': 'rateHistory.get',
-                      'params': [
-                        '2023-255-0x98878b06940ae243284ca214f92bb71a2b032b8a',
-                        '2023-255-0xe3f5a90f9cb311505cd691a46596599aa1a0ad7d',
-                        String(Math.floor(new Date().getTime()/1000)-60*60*24),
-                        String(Math.floor(new Date().getTime()/1000)),
-                        '900'
-                      ]
-                    })
+                    }
                   })
                   data = await response.json()
 
-                  movrPrice = data.result.slice(-1)[0].rate.toFixed(2)
+                  movrPrice = data.moonriver.usd.toFixed(2)
                 "
                 x-text="`$${movrPrice}`"
               >
