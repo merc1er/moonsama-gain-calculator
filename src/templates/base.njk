@@ -35,6 +35,27 @@
     gtag('js', new Date());
 
     gtag('config', 'G-NJ895N23T4');
+
+    window.fetchJSONP = (unique => url => 
+     new Promise(rs => {
+       // INIT
+       let script = document.createElement('script')
+       let name = "_jsonp_" + unique++
+       
+       if (url.match(/\?/)) url += "&callback="+name
+       else url += "?callback="+name
+       
+       script.src = url
+       window[name] = json => {
+        console.log(`json: ${json}`)
+         rs(new Response(JSON.stringify(json)))
+         script.remove()
+         delete window[name]
+       }
+       
+       document.body.appendChild(script)
+     })
+   )(0)
   </script>
 
   <title>Mooncraft | Moonsama Minecraft Gain Calculator</title>
@@ -66,15 +87,14 @@
               <span
                 class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium mr-2" id="movrPrice"
                 x-init="
-                  response = await fetch('https://api.manager.artatol.net/utils/dailysama-tickers', {
+
+                  response = await fetch('https://movr-price-c17w.vercel.app/api/movr', {
                     method: 'GET',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    }
+                    mode: 'cors',
                   })
                   data = await response.json()
 
-                  movrPrice = data.moonriver.usd.toFixed(2)
+                  movrPrice = data.usd
                 "
                 x-text="`$${movrPrice}`"
               >
