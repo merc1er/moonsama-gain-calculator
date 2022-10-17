@@ -94,7 +94,7 @@
                   })
                   data = await response.json()
 
-                  movrPrice = data.usd
+                  movrPrice = parseFloat(data.usd).toFixed(2)
                 "
                 x-text="`$${movrPrice}`"
               >
