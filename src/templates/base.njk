@@ -61,7 +61,7 @@
   <title>Mooncraft | Moonsama Minecraft Gain Calculator</title>
 </head>
 
-<body class="bg-gray-900 text-white" x-data="{ movrPrice: '' }">
+<body class="bg-gray-900 text-white" x-data="{ samaPrice: '' }">
   <noscript>You need to enable JavaScript to run this app.</noscript>
 
   {# Navbar #}
@@ -81,31 +81,22 @@
 
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 
-          <!-- MOVR price ticker -->
+          <!-- SAMA price ticker -->
           <div class="ml-3 relative">
             <div class="flex">
               <span
-                class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium mr-2" id="movrPrice"
-                x-init="
-
-                  response = await fetch('https://movr-price-c17w.vercel.app/api/movr', {
-                    method: 'GET',
-                    mode: 'cors',
-                  })
-                  data = await response.json()
-
-                  movrPrice = parseFloat(data.usd).toFixed(2)
-                "
-                x-text="`$${movrPrice}`"
+                class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium mr-2" id="samaPrice"
+                x-init=""
+                x-text="``"
               >
                 -
               </span>
               <span class="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" aria-expanded="false" aria-haspopup="true">
-                <img class="h-8 w-8 rounded-full" src="/static/img/movr.png" alt="Moonriver logo">
+                <img class="h-8 w-8 rounded-full" src="/static/img/sama.png" alt="Moonriver logo">
               </span>
             </div>
           </div>
-          <!-- /MOVR price ticker -->
+          <!-- /SAMA price ticker -->
 
         </div>
       </div>
