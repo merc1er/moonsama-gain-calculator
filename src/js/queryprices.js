@@ -1,4 +1,4 @@
-const axios = require('axios');
+const axios = require('axios'); //
 
 var khaosSubgraphQueries = {
   all_pairs_query: "query MyQuery($resources_addresses: [String!]) {tokens {pairQuote {token0 {id symbol} \ntoken1 {id \nsymbol} \ntoken0Price \ntoken1Price}}}",
