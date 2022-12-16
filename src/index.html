@@ -60,8 +60,7 @@
                     const results = await Promise.all([getPlayerResults(), materialsSamaProm])
                     this.resources = results[0]
                     this.prices = results[1]            
-                    var samaPrice = await getUSDPriceOfSama();
-                    console.log(samaPrice);
+                    var samaPrice = await Promise.resolve(getUSDPriceOfSama());
 
                     this.total = getTotalSama(this.resources, this.prices, samaPrice)
 
@@ -201,8 +200,15 @@
                       <div class="font-mono pl-2 pr-1 flex-1 text-right border-t-2" x-text="total.totalSell"></div>
                       <div class="font-mono pl-2 pr-1 flex-1 text-right" x-text="`$${numberWithCommas(total.totalSellUsd)}`"></div>                
                     </div>
+                    <div class="flex-1 text-right">
+                      <div class="font-bold pr-1">Khaos Dex</div>
+                      <template x-for="(resource, index) in getValidResources(resources)" :key="resource">
+                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 pr-1 flex-1 text-right" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].khaosExchangePrice).toFixed(3) : '-'"></div>
+                      </template>
+                      <div class="font-mono pl-2 pr-1 flex-1 text-right border-t-2" x-text="total.totalKhaosDexPrice"></div>
+                      <div class="font-mono pl-2 pr-1 flex-1 text-right" x-text="`$${numberWithCommas(total.totalKhaosDexPriceUSD)}`"></div>                
+                    </div>
                   </div>
-
                 </template>
                 {# /Detailed view table #}
               </div>
