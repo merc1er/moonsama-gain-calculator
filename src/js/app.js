@@ -1,50 +1,56 @@
 import Alpine from 'alpinejs'
 
-/*material ids correspond to token id
-https://moonsama.com/token/ERC1155/0x1b30a3b5744e733d8d2f19f0812e3f79152a8777/10
-^token id is last part of URL
-*/
-const materials = [{"tokenId": 1, "name":"wood"}, {"tokenId": 2, "name":"stone"}, {"tokenId": 3, "name":"iron"}, {"tokenId": 4, "name":"gold"}, {"tokenId": 5, "name":"experience"}, {"tokenId": 10, "name":"grain"}, {"tokenId": 12, "name":"string"}, {"tokenId": 13, "name":"fish_specimen"}, {"tokenId": 16, "name": "moonstone"}]
+//carnage resources
+const materials = [
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 1, "name": "wood" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 2, "name": "stone" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 3, "name": "iron" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 4, "name": "gold" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 5, "name": "experience" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 10, "name": "grain" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 12, "name": "string" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 13, "name": "fish_specimen" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 16, "name": "moonstone" },
 
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 1, "name": "pumpkins" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 2, "name": "blood_crystals" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 3, "name": "dna" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 4, "name": "mobidium" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 5, "name": "wood" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 6, "name": "stone" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 7, "name": "iron" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 8, "name": "gold" }
+]
 
 /**
  * @typedef {Object} MaterialResult
- * @property {number} tokenId - id of token
+ * @property {number} chainId
+ * @property {number} tokenId - id of token 
  * @property {string} name - name of token
  * @property {number} lowestSell
  * @property {number} highestBuy
  */
 
 /**
- * Returns prices, tokenIds, and names for all minecraft NFTs
+ * Returns prices, tokenIds, chainIds, and names for all game NFTs
  * @returns {Promise<MaterialResult[]>}
  */
-async function getAllMaterialsMovr(){
-  const proms = []
-  let rawResult = [];
-  for(const material of materials){
-    const prom = getMaterialMovr(material.tokenId)
-    proms.push(prom)
-    prom.then(({lowestSell, highestBuy})=>{
-      rawResult.push({tokenId: material.tokenId, name: material.name, lowestSell, highestBuy})
-    })
-  }
-  await Promise.all(proms)
-  rawResult = rawResult.sort((a, b) => a.tokenId - b.tokenId)
+async function getAllMaterialsPrice(){
+  let results = await Promise.all(materials.map(async ({chainId, name, tokenId, assetAddress}) => {
+    let result
+    if(chainId === 1285){
+      result = await getMaterialMovr(assetAddress, tokenId)
+    }else if(chainId === 2109){
+      result = await getMaterialSama(assetAddress, tokenId)
+    }
+    if(!!result){
+      return {chainId, name, tokenId, lowestSell: result.lowestSell, highestBuy: result.highestBuy }
+    }
+  }))
 
+  results = results.filter(r=> !!r) //filter out results that are not an object
 
-  const result = {
-    wood: rawResult[0],
-    stone: rawResult[1],
-    iron: rawResult[2],
-    gold: rawResult[3],
-    exp: rawResult[4],
-    grain: rawResult[5],
-    string: rawResult[6],
-    fish_specimen: rawResult[7],
-    moonstone: rawResult[8]
-  }
-  return result
+  return results
 }
 
 
@@ -53,17 +59,17 @@ async function getAllMaterialsMovr(){
  * @param {number} tokenId
  * @returns {Promise<{lowestSell: number, highestBuy: number}>}
  */
-async function getMaterialMovr(tokenId){
+async function getMaterialMovr(assetAddress, tokenId){
   const graphqlQuery =
 `query getAssetOrders {
-  sells: orders(where: {active: true, sellAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}", onlyTo: "0x0000000000000000000000000000000000000000"}, orderBy: pricePerUnit, orderDirection: asc, skip: 0, first: 1) {
+  sells: orders(where: {active: true, sellAsset: "${assetAddress}-${tokenId}", onlyTo: "0x0000000000000000000000000000000000000000"}, orderBy: pricePerUnit, orderDirection: asc, skip: 0, first: 1) {
     sellAsset {
       id
     }
     askPerUnitNominator
     askPerUnitDenominator
   },
-  buys: orders(where: {active: true, buyAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}"}, orderBy: pricePerUnit, orderDirection: desc, skip: 0, first: 1) {
+  buys: orders(where: {active: true, buyAsset: "${assetAddress}-${tokenId}"}, orderBy: pricePerUnit, orderDirection: desc, skip: 0, first: 1) {
     buyAsset {
       id
     }
@@ -103,25 +109,130 @@ async function getMaterialMovr(tokenId){
 
 
 /**
+ * Returns the price in MOVR of token
+ * @param {number} tokenId
+ * @returns {Promise<{lowestSell: number, highestBuy: number}>}
+ */
+async function getMaterialSama(assetAddress, tokenId){
+  const graphqlQuery =
+`query getAssetOrders {
+  sells: orders(where: {active: true, sellAsset: "${assetAddress}-${tokenId}", onlyTo: "0x0000000000000000000000000000000000000000"}, orderBy: pricePerUnit, orderDirection: asc, skip: 0, first: 1) {
+    sellAsset {
+      id
+    }
+    askPerUnitNominator
+    askPerUnitDenominator
+  },
+  buys: orders(where: {active: true, buyAsset: "${assetAddress}-${tokenId}"}, orderBy: pricePerUnit, orderDirection: desc, skip: 0, first: 1) {
+    buyAsset {
+      id
+    }
+    askPerUnitNominator
+    askPerUnitDenominator
+  }
+}`
+
+  const fetchUrl = "https://exosama-subgraph.moonsama.com/subgraphs/name/moonsama/marketplacev8"
+  const response = await fetch(fetchUrl, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify({query: graphqlQuery})
+  });
+  const responseJson = await response.json()
+  const buys = responseJson.data.buys.map(buy => buy.askPerUnitDenominator/buy.askPerUnitNominator).sort((a, b) => a-b)
+  const sells = responseJson.data.sells.map(sell => sell.askPerUnitNominator/sell.askPerUnitDenominator).sort((a, b) => a-b)
+
+  let lowestSell = sells.shift()
+  let highestBuy = buys.pop()
+
+  if(isNaN(lowestSell)){
+    lowestSell = 0
+  }
+  if(isNaN(highestBuy)){
+    highestBuy = 0
+  }
+  return {lowestSell, highestBuy}
+}
+
+
+/**
  * Returns the total USD value of all resources
  * @param {Dict} resources
- * @param {Dict} prices
+ * @param {Dict[]} prices
+ * @param {number} gameDate
  * @param {Float} price of MOVR token in USD: movrPrice
- * @returns {totalBuyMovr: number, totalBuyUsd: number, totalSellMovr: number, totalSellUsd: number}
+ * @param {Float} price of SAMA token in USD: samaPrice
+ * @returns {totalBuyMovr: number, totalBuySama: number, totalBuyUsd: number, totalSellMovr: number, totalSellSama: number, totalSellUsd: number}
  */
-function getTotal(resources, prices, movrPrice){
+function getTotal(resources, prices, gameDate, movrPrice, samaPrice){
+
+  const betaResources = gameDate > 1664609731000
   let totalBuyMovr = 0
   let totalSellMovr = 0
-  for(const {tokenId, name} of materials){
+
+  let totalBuySama = 0
+  let totalSellSama = 0
+
+  for(const {chainId, tokenId, name} of materials){
     if(resources.hasOwnProperty(name) && !isNaN(parseFloat(resources[name]))){
-      totalBuyMovr+= resources[name] * prices[name].highestBuy
-      totalSellMovr+= resources[name] * prices[name].lowestSell
+      const matchingPrice = prices.find(p=> p.chainId === chainId && p.tokenId === tokenId)
+     
+      //beta resources are in sama after certain date
+      if(betaResources && chainId === 1285 && ["wood", "stone", "iron", "gold"].includes(name)){
+        continue
+      }
+
+      if(!betaResources && chainId === 2109){
+        continue
+      }
+
+      if(chainId === 1285){
+        if(!!matchingPrice){
+          totalBuyMovr+= resources[name] * matchingPrice.highestBuy
+          totalSellMovr+= resources[name] * matchingPrice.lowestSell
+        }
+      }else if(chainId === 2109){
+        if(!!matchingPrice){
+          totalBuySama+= resources[name] * matchingPrice.highestBuy
+          totalSellSama+= resources[name] * matchingPrice.lowestSell
+        }
+      }
     }
   }
 
-  const totalBuyUsd = totalBuyMovr * movrPrice
-  const totalSellUsd = totalSellMovr * movrPrice
-  return {totalBuyMovr: totalBuyMovr.toFixed(3), totalBuyUsd: totalBuyUsd.toFixed(2), totalSellMovr: totalSellMovr.toFixed(3), totalSellUsd: totalSellUsd.toFixed(2)}
+  const totalBuyUsd = totalBuyMovr * movrPrice + totalBuySama * samaPrice
+  const totalSellUsd = totalSellMovr * movrPrice + totalSellSama * samaPrice
+  return {totalBuyMovr: totalBuyMovr.toFixed(3), totalBuySama: totalBuySama.toFixed(3), totalBuyUsd: totalBuyUsd.toFixed(2), totalSellMovr: totalSellMovr.toFixed(3), totalSellSama: totalSellSama.toFixed(3), totalSellUsd: totalSellUsd.toFixed(2)}
+}
+
+
+/**
+ * Get price for individual resource
+ * @param {string} resource
+ * @param {Dict[]} prices
+ * @param {number} gameDate
+ * @returns {lowestSell: number, highestBuy: number} | undefined
+ */
+function getPrice(resource, prices, gameDate){
+
+  const betaResource = (gameDate > 1664609731000) && ["wood", "stone", "iron", "gold"].includes(name)
+
+  let matchingPrice
+  if(betaResource){
+    matchingPrice = prices.find(p=> p.chainId === 2109 && p.name === resource)
+  }else{
+    matchingPrice = prices.find(p=> p.name === resource)
+  }
+  if(!!matchingPrice){
+    return {lowestSell: matchingPrice.lowestSell, highestBuy: matchingPrice.highestBuy}
+  }
 }
 
 
@@ -209,14 +320,14 @@ function getValidResources(resources) {
 }
 
 // Make the following functions accessible from AlpineJS
-window.getAllMaterialsMovr = getAllMaterialsMovr
+window.getAllMaterialsPrice = getAllMaterialsPrice
 //load material quote on page load
-window.getAllMaterialsMovrFailed = false 
-const getAllMaterialsMovrPromise = getAllMaterialsMovr()
-getAllMaterialsMovrPromise.catch(()=>{
-  window.getAllMaterialsMovrFailed = true
+window.getAllMaterialsPriceFailed = false 
+const getAllMaterialsPricePromise = getAllMaterialsPrice()
+getAllMaterialsPricePromise.catch(()=>{
+  window.getAllMaterialsPricePromise = true
 })
-window.getAllMaterialsMovrPromise = getAllMaterialsMovrPromise
+window.getAllMaterialsPricePromise = getAllMaterialsPricePromise
 window.getTotal = getTotal
 window.formatDate = formatDate
 window.formatDateApi = formatDateApi
@@ -224,6 +335,7 @@ window.carnageDates = carnageDates
 window.numberWithCommas = numberWithCommas
 window.getValidResources = getValidResources
 window.prettifyResource = prettifyResource
+window.getPrice = getPrice
 // Load Alpine
 window.Alpine = Alpine
 Alpine.start()
