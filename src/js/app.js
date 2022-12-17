@@ -172,7 +172,6 @@ async function getMaterialSama(assetAddress, tokenId){
  * @returns {totalBuyMovr: number, totalBuySama: number, totalBuyUsd: number, totalSellMovr: number, totalSellSama: number, totalSellUsd: number}
  */
 function getTotal(resources, prices, gameDate, movrPrice, samaPrice){
-
   const betaResources = gameDate > 1664609731000
   let totalBuyMovr = 0
   let totalSellMovr = 0
