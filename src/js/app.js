@@ -165,7 +165,7 @@ async function getMaterialSama(assetAddress, tokenId){
 /**
  * Returns the total USD value of all resources
  * @param {Dict} resources
- * @param {Dict} prices
+ * @param {Dict[]} prices
  * @param {number} gameDate
  * @param {Float} price of MOVR token in USD: movrPrice
  * @param {Float} price of SAMA token in USD: samaPrice
@@ -206,6 +206,29 @@ function getTotal(resources, prices, gameDate, movrPrice, samaPrice){
   const totalBuyUsd = totalBuyMovr * movrPrice + totalBuySama * samaPrice
   const totalSellUsd = totalSellMovr * movrPrice + totalSellMovr * samaPrice
   return {totalBuyMovr: totalBuyMovr.toFixed(3), totalBuySama: totalBuySama.toFixed(3), totalBuyUsd: totalBuyUsd.toFixed(2), totalSellMovr: totalSellMovr.toFixed(3), totalSellSama: totalSellSama.toFixed(3), totalSellUsd: totalSellUsd.toFixed(2)}
+}
+
+
+/**
+ * Get price for individual resource
+ * @param {string} resource
+ * @param {Dict[]} prices
+ * @param {number} gameDate
+ * @returns {lowestSell: number, highestBuy: number} | undefined
+ */
+function getPrice(resource, prices, gameDate){
+
+  const betaResource = (gameDate > 1664609731000) && ["wood", "stone", "iron", "gold"].includes(name)
+
+  let matchingPrice
+  if(betaResource){
+    matchingPrice = prices.find(p=> p.chainId === 2109 && p.name === resource)
+  }else{
+    matchingPrice = prices.find(p=> p.name === resource)
+  }
+  if(!!matchingPrice){
+    return {lowestSell: matchingPrice.lowestSell, highestBuy: matchingPrice.highestBuy}
+  }
 }
 
 
@@ -308,6 +331,7 @@ window.carnageDates = carnageDates
 window.numberWithCommas = numberWithCommas
 window.getValidResources = getValidResources
 window.prettifyResource = prettifyResource
+window.getPrice = getPrice
 // Load Alpine
 window.Alpine = Alpine
 Alpine.start()
