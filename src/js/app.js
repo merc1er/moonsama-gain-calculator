@@ -1,36 +1,54 @@
 import Alpine from 'alpinejs'
 
-/*material ids correspond to token id
-https://moonsama.com/token/ERC1155/0x1b30a3b5744e733d8d2f19f0812e3f79152a8777/10
-^token id is last part of URL
-*/
-const materials = [{"tokenId": 1, "name":"wood"}, {"tokenId": 2, "name":"stone"}, {"tokenId": 3, "name":"iron"}, {"tokenId": 4, "name":"gold"}, {"tokenId": 5, "name":"experience"}, {"tokenId": 10, "name":"grain"}, {"tokenId": 12, "name":"string"}, {"tokenId": 13, "name":"fish_specimen"}, {"tokenId": 16, "name": "moonstone"}]
+//carnage resources
+const materials = [
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 1, "name": "wood" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 2, "name": "stone" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 3, "name": "iron" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 4, "name": "gold" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 5, "name": "experience" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 10, "name": "grain" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 12, "name": "string" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 13, "name": "fish_specimen" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 16, "name": "moonstone" },
 
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 1, "name": "pumpkins" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 2, "name": "blood_crystals" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 3, "name": "dna" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 4, "name": "mobidium" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 5, "name": "wood" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 6, "name": "stone" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 7, "name": "iron" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 8, "name": "gold" }
+]
 
 /**
  * @typedef {Object} MaterialResult
- * @property {number} tokenId - id of token
+ * @property {number} chainId
  * @property {string} name - name of token
+ * @property {number} tokenId - id of token
  * @property {number} lowestSell
  * @property {number} highestBuy
  */
 
 /**
- * Returns prices, tokenIds, and names for all minecraft NFTs
+ * Returns prices, tokenIds, chainIds, and names for all game NFTs
  * @returns {Promise<MaterialResult[]>}
  */
-async function getAllMaterialsMovr(){
-  const proms = []
-  let rawResult = [];
-  for(const material of materials){
-    const prom = getMaterialMovr(material.tokenId)
-    proms.push(prom)
-    prom.then(({lowestSell, highestBuy})=>{
-      rawResult.push({tokenId: material.tokenId, name: material.name, lowestSell, highestBuy})
-    })
-  }
-  await Promise.all(proms)
-  rawResult = rawResult.sort((a, b) => a.tokenId - b.tokenId)
+async function getAllMaterialsPrice(){
+
+  const results = await Promise.all(materials.map(async ({chainId, name, tokenId, assetAddress}) => {
+    let result
+    if(chainId === 1285){
+      result = getMaterialMovr(assetAddress, tokenId)
+    }else if(chainId === 2109){
+      result = getMaterialSama(assetAddress, okenId)
+    }
+    if(!!result){
+      return {chainId, name, tokenId, lowestSell: result.lowestSell, highestBuy: result.highestBuy }
+    }
+  }))
+  .filter(material => !!material) //only show include valid materials in results, if there is a new chain id for instance
 
 
   const result = {
@@ -53,17 +71,17 @@ async function getAllMaterialsMovr(){
  * @param {number} tokenId
  * @returns {Promise<{lowestSell: number, highestBuy: number}>}
  */
-async function getMaterialMovr(tokenId){
+async function getMaterialMovr(assetAddress, tokenId){
   const graphqlQuery =
 `query getAssetOrders {
-  sells: orders(where: {active: true, sellAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}", onlyTo: "0x0000000000000000000000000000000000000000"}, orderBy: pricePerUnit, orderDirection: asc, skip: 0, first: 1) {
+  sells: orders(where: {active: true, sellAsset: "${assetAddress}-${tokenId}", onlyTo: "0x0000000000000000000000000000000000000000"}, orderBy: pricePerUnit, orderDirection: asc, skip: 0, first: 1) {
     sellAsset {
       id
     }
     askPerUnitNominator
     askPerUnitDenominator
   },
-  buys: orders(where: {active: true, buyAsset: "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777-${tokenId}"}, orderBy: pricePerUnit, orderDirection: desc, skip: 0, first: 1) {
+  buys: orders(where: {active: true, buyAsset: "${assetAddress}-${tokenId}"}, orderBy: pricePerUnit, orderDirection: desc, skip: 0, first: 1) {
     buyAsset {
       id
     }
@@ -73,6 +91,60 @@ async function getMaterialMovr(tokenId){
 }`
 
   const fetchUrl = "https://moonriver-subgraph.moonsama.com/subgraphs/name/moonsama/marketplacev5"
+  const response = await fetch(fetchUrl, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify({query: graphqlQuery})
+  });
+  const responseJson = await response.json()
+  const buys = responseJson.data.buys.map(buy => buy.askPerUnitDenominator/buy.askPerUnitNominator).sort((a, b) => a-b)
+  const sells = responseJson.data.sells.map(sell => sell.askPerUnitNominator/sell.askPerUnitDenominator).sort((a, b) => a-b)
+
+  let lowestSell = sells.shift()
+  let highestBuy = buys.pop()
+
+  if(isNaN(lowestSell)){
+    lowestSell = 0
+  }
+  if(isNaN(highestBuy)){
+    highestBuy = 0
+  }
+  return {lowestSell, highestBuy}
+}
+
+
+/**
+ * Returns the price in MOVR of token
+ * @param {number} tokenId
+ * @returns {Promise<{lowestSell: number, highestBuy: number}>}
+ */
+async function getMaterialSama(assetAddress, tokenId){
+  const graphqlQuery =
+`query getAssetOrders {
+  sells: orders(where: {active: true, sellAsset: "${assetAddress}-${tokenId}", onlyTo: "0x0000000000000000000000000000000000000000"}, orderBy: pricePerUnit, orderDirection: asc, skip: 0, first: 1) {
+    sellAsset {
+      id
+    }
+    askPerUnitNominator
+    askPerUnitDenominator
+  },
+  buys: orders(where: {active: true, buyAsset: "${assetAddress}-${tokenId}"}, orderBy: pricePerUnit, orderDirection: desc, skip: 0, first: 1) {
+    buyAsset {
+      id
+    }
+    askPerUnitNominator
+    askPerUnitDenominator
+  }
+}`
+
+  const fetchUrl = "https://exosama-subgraph.moonsama.com/subgraphs/name/moonsama/marketplacev8"
   const response = await fetch(fetchUrl, {
     method: 'POST',
     mode: 'cors',
