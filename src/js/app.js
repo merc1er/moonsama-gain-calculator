@@ -10,7 +10,7 @@ https://moonsama.com/token/ERC1155/0x1b30a3b5744e733d8d2f19f0812e3f79152a8777/10
 
 /* Beta resource materials.
   Beta resources are ERC1155, which are tokens that fall under same address but indexed by ID:
-  erce1155address-tokenId. The address field is the erc721 address of the tokens.
+  erce1155address-tokenId. The address field is the erc20 or erc721 address of the tokens.
 */
 const materials = [{"tokenId": 1, "name":"pumpkins", "address": "0xb296335B6d4AB9F5e5Dc4bf115621c14ab70136C"}, {"tokenId": 2, "name":"blood_crystals", "address": "0x76ba6821A834E2d30A699312829f8204830CCF5B".toLowerCase()}, {"tokenId": 3, "name":"dna", "address": "0xff6ca2a78E4Dd4871256cc5B63dC8dbf02a36F3D".toLowerCase()}, {"tokenId": 4, "name":"mobidium", "address": "0xa1caaaa65fd4e144c4650f87933705b9a065008e"}, {"tokenId": 5, "name":"wood", "address": "0x0528Ae6c997BA4FfC4d6ADD898a2Cc9f26d4a872".toLowerCase()}, {"tokenId": 6, "name":"stone", "address": "0x122EBE2B679cF54Bc8a6e89c1009714b354e2d10".toLowerCase()}, {"tokenId": 7, "name":"iron", "address": "0x829191FEC0f25a27c5bDCdBbD0e37E6342b39945".toLowerCase()}, {"tokenId": 8, "name":"gold", "address": "0x549ab43056E3489335b47927FFcd4825ce484bA3".toLowerCase()}]
 const erc1155address = "0x95370351df734b6a712ba18848b47574d3e90e61";
@@ -61,10 +61,7 @@ async function getAllMaterialsSama(){
  * @returns {Promise<{lowestSell: number, highestBuy: number}>}
  */
 async function getMaterialSama(tokenId, address){
-  console.log("get sama material...")
   let khaosExchangePrice = await Promise.resolve(getPriceOfARssInSama(address));
-
-
   const graphqlQuery =
 `query getAssetOrders {
   sells: orders(where: {active: true, sellAsset: "${erc1155address}-${tokenId}", onlyTo: "0x0000000000000000000000000000000000000000"}, orderBy: pricePerUnit, orderDirection: asc, skip: 0, first: 1) {
@@ -82,7 +79,6 @@ async function getMaterialSama(tokenId, address){
     askPerUnitDenominator
   }
 }`
-
   const fetchUrl = "https://exosama-subgraph.moonsama.com/subgraphs/name/moonsama/marketplacev8" // updated
   const response = await fetch(fetchUrl, {
     method: 'POST',
@@ -97,13 +93,10 @@ async function getMaterialSama(tokenId, address){
     body: JSON.stringify({query: graphqlQuery})
   });
   const responseJson = await response.json()
-
   const buys = responseJson.data.buys.map(buy => buy.askPerUnitDenominator/buy.askPerUnitNominator).sort((a, b) => a-b)
   const sells = responseJson.data.sells.map(sell => sell.askPerUnitNominator/sell.askPerUnitDenominator).sort((a, b) => a-b)
-
   let lowestSell = sells.shift()
   let highestBuy = buys.pop()
-
   if(isNaN(lowestSell)){
     lowestSell = 0
   }
@@ -121,6 +114,7 @@ async function getMaterialSama(tokenId, address){
  * @returns {totalBuySama: number, totalBuyUsd: number, totalSellSama: number, totalSellUsd: number}
  */
 function getTotalSama(resources, prices, price){
+  /* add something where the user's resources price is calculated by filling orders until the user has no more resources, keeping track of sums accordingly */
   let totalBuy = 0
   let totalSell = 0
   let totalKhaosDexPrice = 0
@@ -131,11 +125,9 @@ function getTotalSama(resources, prices, price){
       totalKhaosDexPrice+= resources[name] * prices[name].khaosExchangePrice
     }
   }
-
   const totalBuyUsd = totalBuy * price
   const totalSellUsd = totalSell * price
   const totalKhaosDexPriceUSD = totalKhaosDexPrice * price
-
   return {totalBuy: totalBuy.toFixed(3), totalBuyUsd: totalBuyUsd.toFixed(2), totalSell: totalSell.toFixed(3), totalSellUsd: totalSellUsd.toFixed(2), totalKhaosDexPrice: totalKhaosDexPrice.toFixed(2), totalKhaosDexPriceUSD: totalKhaosDexPriceUSD.toFixed(2)}
 }
 
@@ -170,7 +162,7 @@ function prettifyResource(resource){
   if(res === "fish_specimen"){
     res = "fish"
   }
-
+  // if (res === "blood_crystals" || res === "Blood_crystals") { res = 'blood crystals'}
   return res.trim().toLowerCase().replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))
 }
 

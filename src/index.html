@@ -152,8 +152,8 @@
 
                 {# Total USD value #}
                 <div class="flex items-center mt-2 justify-center mb-2">
-                  <span x-text="total.totalBuy"></span> <img src="/static/img/sama.png" class="h-4 w-4"> (~ $<span
-                    x-text="numberWithCommas(total.totalBuyUsd)"></span>)
+                  <span x-text="total.totalKhaosDexPrice"></span> <img src="/static/img/sama.png" class="h-4 w-4"> (~ $<span
+                    x-text="numberWithCommas(total.totalKhaosDexPriceUSD)"></span>)
                 </div>
                 {# /Total USD value #}
 
@@ -184,29 +184,29 @@
                       <div class="font-bold text-right">USD</div>
 
                     </div>
-                    <div class="flex-1 text-right">
+                    <div class="flex-1 text-center">
                       <div class="font-bold">Buy</div>
                       <template x-for="(resource, index) in getValidResources(resources)" :key="resource">
-                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 flex-1 text-right" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].highestBuy).toFixed(3) : '-'"></div>
+                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 flex-1 text-center" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].highestBuy).toFixed(3) : '-'"></div>
                       </template>
-                      <div class="font-mono pl-2 ml-1 flex-1 text-right border-t-2" x-text="total.totalBuy"></div>
-                      <div class="font-mono pl-2 flex-1 text-right" x-text="`$${numberWithCommas(total.totalBuyUsd)}`"></div>                
+                      <div class="font-mono pl-2 ml-1 flex-1 text-center border-t-2" x-text="total.totalBuy"></div>
+                      <div class="font-mono pl-2 flex-1 text-center" x-text="`$${numberWithCommas(total.totalBuyUsd)}`"></div>                
                     </div>
-                    <div class="flex-1 text-right">
+                    <div class="flex-1 text-center">
                       <div class="font-bold pr-1">Sell</div>
                       <template x-for="(resource, index) in getValidResources(resources)" :key="resource">
-                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 pr-1 flex-1 text-right" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].lowestSell).toFixed(3) : '-'"></div>
+                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 pr-1 flex-1 text-center" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].lowestSell).toFixed(3) : '-'"></div>
                       </template>
-                      <div class="font-mono pl-2 pr-1 flex-1 text-right border-t-2" x-text="total.totalSell"></div>
-                      <div class="font-mono pl-2 pr-1 flex-1 text-right" x-text="`$${numberWithCommas(total.totalSellUsd)}`"></div>                
+                      <div class="font-mono pl-2 pr-1 flex-1 text-center border-t-2" x-text="total.totalSell"></div>
+                      <div class="font-mono pl-2 pr-1 flex-1 text-center" x-text="`$${numberWithCommas(total.totalSellUsd)}`"></div>                
                     </div>
                     <div class="flex-1 text-right">
-                      <div class="font-bold pr-1">Khaos Dex</div>
+                      <div class="font-bold pr-1 stopwrap">Sell (Khaos Dex)</div>
                       <template x-for="(resource, index) in getValidResources(resources)" :key="resource">
-                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 pr-1 flex-1 text-right" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].khaosExchangePrice).toFixed(3) : '-'"></div>
+                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 pr-1 flex-1 text-center" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].khaosExchangePrice).toFixed(3) : '-'"></div>
                       </template>
-                      <div class="font-mono pl-2 pr-1 flex-1 text-right border-t-2" x-text="total.totalKhaosDexPrice"></div>
-                      <div class="font-mono pl-2 pr-1 flex-1 text-right" x-text="`$${numberWithCommas(total.totalKhaosDexPriceUSD)}`"></div>                
+                      <div class="font-mono pl-2 pr-1 flex-1 text-center border-t-2" x-text="total.totalKhaosDexPrice"></div>
+                      <div class="font-mono pl-2 pr-1 flex-1 text-center" x-text="`$${numberWithCommas(total.totalKhaosDexPriceUSD)}`"></div>                
                     </div>
                   </div>
                 </template>
