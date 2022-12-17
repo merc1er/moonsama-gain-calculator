@@ -208,7 +208,7 @@ function getTotal(resources, prices, gameDate, movrPrice, samaPrice){
   }
 
   const totalBuyUsd = totalBuyMovr * movrPrice + totalBuySama * samaPrice
-  const totalSellUsd = totalSellMovr * movrPrice + totalSellMovr * samaPrice
+  const totalSellUsd = totalSellMovr * movrPrice + totalSellSama * samaPrice
   return {totalBuyMovr: totalBuyMovr.toFixed(3), totalBuySama: totalBuySama.toFixed(3), totalBuyUsd: totalBuyUsd.toFixed(2), totalSellMovr: totalSellMovr.toFixed(3), totalSellSama: totalSellSama.toFixed(3), totalSellUsd: totalSellUsd.toFixed(2)}
 }
 
