@@ -189,6 +189,10 @@ function getTotal(resources, prices, gameDate, movrPrice, samaPrice){
         continue
       }
 
+      if(!betaResources && chainId === 2109){
+        continue
+      }
+
       if(chainId === 1285){
         if(!!matchingPrice){
           totalBuyMovr+= resources[name] * matchingPrice.highestBuy
