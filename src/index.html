@@ -52,14 +52,14 @@
                   }
 
                   try{
-                    let materialsMovrProm = getAllMaterialsMovrPromise
-                    if(window.getAllMaterialsMovrFailed){
-                      materialsMovrProm = getAllMaterialsMovr()
+                    let materialsPriceProm = getAllMaterialsPricePromise
+                    if(window.getAllMaterialsPriceFailed){
+                      materialsPriceProm = getAllMaterialsPrice()
                     }
-                    const results = await Promise.all([getPlayerResults(), materialsMovrProm])
+                    const results = await Promise.all([getPlayerResults(), materialsPriceProm])
                     this.resources = results[0]
                     this.prices = results[1]
-                    this.total = getTotal(this.resources, this.prices, this.movrPrice)
+                    this.total = getTotal(this.resources, this.prices, this.selectedDate, this.movrPrice, 0)
 
                     if(this.resources.error){
                       throw new Error(this.resources.error)
@@ -178,6 +178,7 @@
                         <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 flex-1 text-right" x-text="`${parseFloat(resources[resource]).toFixed(3)}`"></div>
                       </template>
                       <div class="font-bold text-right border-t-2 border-transparent">MOVR</div>
+                      <div class="font-bold text-right border-t-2 border-transparent">SAMA</div>
                       <div class="font-bold text-right">USD</div>
 
                     </div>
@@ -187,6 +188,7 @@
                         <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 flex-1 text-right" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].highestBuy).toFixed(3) : '-'"></div>
                       </template>
                       <div class="font-mono pl-2 ml-1 flex-1 text-right border-t-2" x-text="total.totalBuyMovr"></div>
+                      <div class="font-mono pl-2 flex-1 text-right" x-text="total.totalBuySama"></div>                
                       <div class="font-mono pl-2 flex-1 text-right" x-text="`$${numberWithCommas(total.totalBuyUsd)}`"></div>                
                     </div>
                     <div class="flex-1 text-right">
@@ -195,6 +197,7 @@
                         <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 pr-1 flex-1 text-right" x-text="prices.hasOwnProperty(resource) ? parseFloat(resources[resource] * prices[resource].lowestSell).toFixed(3) : '-'"></div>
                       </template>
                       <div class="font-mono pl-2 pr-1 flex-1 text-right border-t-2" x-text="total.totalSellMovr"></div>
+                      <div class="font-mono pl-2 pr-1 flex-1 text-right" x-text="total.totalSellSama"></div>                
                       <div class="font-mono pl-2 pr-1 flex-1 text-right" x-text="`$${numberWithCommas(total.totalSellUsd)}`"></div>                
                     </div>
                   </div>

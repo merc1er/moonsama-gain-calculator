@@ -25,8 +25,8 @@ const materials = [
 /**
  * @typedef {Object} MaterialResult
  * @property {number} chainId
+ * @property {number} tokenId - id of token 
  * @property {string} name - name of token
- * @property {number} tokenId - id of token
  * @property {number} lowestSell
  * @property {number} highestBuy
  */
@@ -36,33 +36,21 @@ const materials = [
  * @returns {Promise<MaterialResult[]>}
  */
 async function getAllMaterialsPrice(){
-
-  const results = await Promise.all(materials.map(async ({chainId, name, tokenId, assetAddress}) => {
+  let results = await Promise.all(materials.map(async ({chainId, name, tokenId, assetAddress}) => {
     let result
     if(chainId === 1285){
-      result = getMaterialMovr(assetAddress, tokenId)
+      result = await getMaterialMovr(assetAddress, tokenId)
     }else if(chainId === 2109){
-      result = getMaterialSama(assetAddress, okenId)
+      result = await getMaterialSama(assetAddress, tokenId)
     }
     if(!!result){
       return {chainId, name, tokenId, lowestSell: result.lowestSell, highestBuy: result.highestBuy }
     }
   }))
-  .filter(material => !!material) //only show include valid materials in results, if there is a new chain id for instance
 
+  results = results.filter(r=> !!r) //filter out results that are not an object
 
-  const result = {
-    wood: rawResult[0],
-    stone: rawResult[1],
-    iron: rawResult[2],
-    gold: rawResult[3],
-    exp: rawResult[4],
-    grain: rawResult[5],
-    string: rawResult[6],
-    fish_specimen: rawResult[7],
-    moonstone: rawResult[8]
-  }
-  return result
+  return results
 }
 
 
@@ -178,22 +166,40 @@ async function getMaterialSama(assetAddress, tokenId){
  * Returns the total USD value of all resources
  * @param {Dict} resources
  * @param {Dict} prices
+ * @param {number} gameDate
  * @param {Float} price of MOVR token in USD: movrPrice
- * @returns {totalBuyMovr: number, totalBuyUsd: number, totalSellMovr: number, totalSellUsd: number}
+ * @param {Float} price of SAMA token in USD: samaPrice
+ * @returns {totalBuyMovr: number, totalBuySama: number, totalBuyUsd: number, totalSellMovr: number, totalSellSama: number, totalSellUsd: number}
  */
-function getTotal(resources, prices, movrPrice){
+function getTotal(resources, prices, gameDate, movrPrice, samaPrice){
+  console.log("gameDate "+String(gameDate))
   let totalBuyMovr = 0
   let totalSellMovr = 0
-  for(const {tokenId, name} of materials){
+
+  let totalBuySama = 0
+  let totalSellSama = 0
+
+  for(const {chainId, tokenId, name} of materials){
     if(resources.hasOwnProperty(name) && !isNaN(parseFloat(resources[name]))){
-      totalBuyMovr+= resources[name] * prices[name].highestBuy
-      totalSellMovr+= resources[name] * prices[name].lowestSell
+      const matchingPrice = prices.find(p=> p.chainId === chainId && p.tokenId === tokenId)
+
+      if(chainId === 1285){
+        if(!!matchingPrice){
+          totalBuyMovr+= resources[name] * matchingPrice.highestBuy
+          totalSellMovr+= resources[name] * matchingPrice.lowestSell
+        }
+      }else if(chainId === 2109){
+        if(!!matchingPrice){
+          totalBuySama+= resources[name] * matchingPrice.highestBuy
+          totalSellSama+= resources[name] * matchingPrice.lowestSell
+        }
+      }
     }
   }
 
-  const totalBuyUsd = totalBuyMovr * movrPrice
-  const totalSellUsd = totalSellMovr * movrPrice
-  return {totalBuyMovr: totalBuyMovr.toFixed(3), totalBuyUsd: totalBuyUsd.toFixed(2), totalSellMovr: totalSellMovr.toFixed(3), totalSellUsd: totalSellUsd.toFixed(2)}
+  const totalBuyUsd = totalBuyMovr * movrPrice + totalBuySama * samaPrice
+  const totalSellUsd = totalSellMovr * movrPrice + totalSellMovr * samaPrice
+  return {totalBuyMovr: totalBuyMovr.toFixed(3), totalBuySama: totalBuySama.toFixed(3), totalBuyUsd: totalBuyUsd.toFixed(2), totalSellMovr: totalSellMovr.toFixed(3), totalSellSama: totalSellSama.toFixed(3), totalSellUsd: totalSellUsd.toFixed(2)}
 }
 
 
@@ -281,14 +287,14 @@ function getValidResources(resources) {
 }
 
 // Make the following functions accessible from AlpineJS
-window.getAllMaterialsMovr = getAllMaterialsMovr
+window.getAllMaterialsPrice = getAllMaterialsPrice
 //load material quote on page load
-window.getAllMaterialsMovrFailed = false 
-const getAllMaterialsMovrPromise = getAllMaterialsMovr()
-getAllMaterialsMovrPromise.catch(()=>{
-  window.getAllMaterialsMovrFailed = true
+window.getAllMaterialsPriceFailed = false 
+const getAllMaterialsPricePromise = getAllMaterialsPrice()
+getAllMaterialsPricePromise.catch(()=>{
+  window.getAllMaterialsPricePromise = true
 })
-window.getAllMaterialsMovrPromise = getAllMaterialsMovrPromise
+window.getAllMaterialsPricePromise = getAllMaterialsPricePromise
 window.getTotal = getTotal
 window.formatDate = formatDate
 window.formatDateApi = formatDateApi
