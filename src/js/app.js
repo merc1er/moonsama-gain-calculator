@@ -9,7 +9,7 @@ const materials = [
 { "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 5, "name": "experience", "erc20Address": "0x138a90f246abb23a157da7a1d9db19dcf1691362"},
 { "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 10, "name": "grain", "erc20Address": "" },
 { "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 12, "name": "string", "erc20Address": "0x0c0e3977c00ab4121d52ac8c6aeef9421d174458" },
-{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 13, "name": "fish_specimen" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 13, "name": "fish_specimen", "erc20Address": ""},
 { "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 16, "name": "moonstone", "erc20Address": "0xbe0b5b87ceb3eb1b05d11dc83332409291b35746"},
 
 { "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 1, "name": "pumpkins", "erc20Address": "0xb296335b6d4ab9f5e5dc4bf115621c14ab70136c" },
