@@ -87,14 +87,13 @@
               <span
                 class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium mr-2" id="movrPrice"
                 x-init="
-
-                  response = await fetch('https://movr-price-c17w.vercel.app/api/movr', {
+                  response = await fetch('https://moonsama-serverside-priceticker.vercel.app/api/movrprice', {
                     method: 'GET',
                     mode: 'cors',
                   })
-                  data = await response.json()
-
-                  movrPrice = parseFloat(data.usd).toFixed(2)
+                  console.log(response);
+                  data = await response.json();
+                  movrPrice = parseFloat(data).toFixed(2)
                 "
                 x-text="`$${movrPrice}`"
               >
