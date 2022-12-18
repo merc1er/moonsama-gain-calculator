@@ -2,24 +2,24 @@ import Alpine from 'alpinejs'
 
 //carnage resources
 const materials = [
-{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 1, "name": "wood" },
-{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 2, "name": "stone" },
-{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 3, "name": "iron" },
-{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 4, "name": "gold" },
-{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 5, "name": "experience" },
-{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 10, "name": "grain" },
-{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 12, "name": "string" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 1, "name": "wood", "erc20Address": "0x8ce2bdc6e0319cea87337d027382f09b715c9601"},
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 2, "name": "stone", "erc20Address": "0x77709c42d43f2e53c24b8fa623a207abdc89857c"},
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 3, "name": "iron", "erc20Address": "0x9e403aa2dfef9ba2a2b82286d13864a64d90bf36"},
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 4, "name": "gold", "erc20Address": "0x088fe6e0e1caca1ee45e8de96abe79e4e139f4ab"},
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 5, "name": "experience", "erc20Address": "0x138a90f246abb23a157da7a1d9db19dcf1691362"},
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 10, "name": "grain", "erc20Address": "" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 12, "name": "string", "erc20Address": "0x0c0e3977c00ab4121d52ac8c6aeef9421d174458" },
 { "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 13, "name": "fish_specimen" },
-{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 16, "name": "moonstone" },
+{ "chainId": 1285, "assetAddress": "0x1b30a3b5744e733d8d2f19f0812e3f79152a8777", "tokenId": 16, "name": "moonstone", "erc20Address": "0xbe0b5b87ceb3eb1b05d11dc83332409291b35746"},
 
-{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 1, "name": "pumpkins" },
-{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 2, "name": "blood_crystals" },
-{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 3, "name": "dna" },
-{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 4, "name": "mobidium" },
-{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 5, "name": "wood" },
-{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 6, "name": "stone" },
-{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 7, "name": "iron" },
-{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 8, "name": "gold" }
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 1, "name": "pumpkins", "erc20Address": "0xb296335b6d4ab9f5e5dc4bf115621c14ab70136c" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 2, "name": "blood_crystals", "erc20Address": "0x76ba6821a834e2d30a699312829f8204830ccf5b" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 3, "name": "dna", "erc20Address": "0xff6ca2a78e4dd4871256cc5b63dc8dbf02a36f3d" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 4, "name": "mobidium", "erc20Address": "0xa1caaaa65fd4e144c4650f87933705b9a065008e" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 5, "name": "wood", "erc20Address": "0x0528ae6c997ba4ffc4d6add898a2cc9f26d4a872"},
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 6, "name": "stone", "erc20Address": "0x122ebe2b679cf54bc8a6e89c1009714b354e2d10" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 7, "name": "iron", "erc20Address": "0x829191fec0f25a27c5bdcdbbd0e37e6342b39945" },
+{ "chainId": 2109, "assetAddress": "0x95370351df734b6a712ba18848b47574d3e90e61", "tokenId": 8, "name": "gold", "erc20Address": "0x549ab43056e3489335b47927ffcd4825ce484ba3" }
 ]
 
 /**
@@ -159,6 +159,15 @@ async function getMaterialSama(assetAddress, tokenId){
     highestBuy = 0
   }
   return {lowestSell, highestBuy}
+}
+
+
+/**
+ * Returns prices for bRSS on Khaos DEX
+ */ 
+
+function getPriceOfRssKhaosDex(resource) {
+
 }
 
 
