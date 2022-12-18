@@ -221,7 +221,7 @@ function getTotal(resources, prices, gameDate, movrPrice, samaPrice){
  */
 function getPrice(resource, prices, gameDate){
 
-  const betaResource = (gameDate > 1664609731000) && ["wood", "stone", "iron", "gold"].includes(name)
+  const betaResource = (gameDate > 1664609731000) && ["wood", "stone", "iron", "gold"].includes(resource)
 
   let matchingPrice
   if(betaResource){

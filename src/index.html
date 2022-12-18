@@ -150,10 +150,20 @@
                 <div class="text-center text-lg font-bold"><span>Total for&nbsp;</span><span x-text="resources.player"></span></div>
 
                 {# Total USD value #}
-                <div class="flex items-center mt-2 justify-center mb-2">
-                  <span x-text="total.totalBuyMovr"></span> <img src="/static/img/movr.png" class="h-4 w-4"> (~ $<span
-                    x-text="numberWithCommas(total.totalBuyUsd)"></span>)
+                <div x-data ="{isBeta: selectedDate > 1664609731000 }" class="flex items-center mt-2 justify-center mb-2">
+                  <template x-if="selectedDate > 1664609731000">
+                    <div class="flex items-center mt-2 justify-center mb-2">
+                      <span x-text="total.totalBuySama"></span> <img src="/static/img/sama.png" class="h-4 w-4"></img> (~ $<span x-text="numberWithCommas(total.totalBuyUsd)"></span>)
+                    </div>
+                  </template>
+                  <template x-if="selectedDate <= 1664609731000">
+                    <div class="flex items-center mt-2 justify-center mb-2">
+                      <span x-text="total.totalBuyMovr"></span> <img src="/static/img/movr.png" class="h-4 w-4"></img> (~ $<span x-text="numberWithCommas(total.totalBuyUsd)"></span>)
+                    </div>
+                  </template>
+
                 </div>
+
                 {# /Total USD value #}
 
                 {# Detailed view table #}
