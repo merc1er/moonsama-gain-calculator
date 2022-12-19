@@ -170,6 +170,14 @@ function getPriceOfRssKhaosDex(resource) {
 
 }
 
+/**
+ * Determines whether a resource is a beta resource or not
+ * @returns a boolean that indicates if a resource is a beta resource (true) or not (false)
+*/
+function isBetaResource(resource) {
+  
+}
+
 
 /**
  * Returns the total USD value of all resources
@@ -229,9 +237,7 @@ function getTotal(resources, prices, gameDate, movrPrice, samaPrice){
  * @returns {lowestSell: number, highestBuy: number} | undefined
  */
 function getPrice(resource, prices, gameDate){
-
   const betaResource = (gameDate > 1664609731000) && ["wood", "stone", "iron", "gold"].includes(resource)
-
   let matchingPrice
   if(betaResource){
     matchingPrice = prices.find(p=> p.chainId === 2109 && p.name === resource)
