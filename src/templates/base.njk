@@ -61,7 +61,7 @@
   <title>Mooncraft | Moonsama Minecraft Gain Calculator</title>
 </head>
 
-<body class="bg-gray-900 text-white" x-data="{ movrPrice: '' }">
+<body class="bg-gray-900 text-white" x-data="{ movrPrice: '', samaPrice: '' }">
   <noscript>You need to enable JavaScript to run this app.</noscript>
 
   {# Navbar #}
@@ -87,14 +87,13 @@
               <span
                 class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium mr-2" id="movrPrice"
                 x-init="
-
-                  response = await fetch('https://movr-price-c17w.vercel.app/api/movr', {
+                  response = await fetch('https://moonsama-serverside-priceticker.vercel.app/api/movrprice', {
                     method: 'GET',
                     mode: 'cors',
                   })
-                  data = await response.json()
-
-                  movrPrice = parseFloat(data.usd).toFixed(2)
+                  console.log(response);
+                  data = await response.json();
+                  movrPrice = parseFloat(data).toFixed(2)
                 "
                 x-text="`$${movrPrice}`"
               >
@@ -106,6 +105,68 @@
             </div>
           </div>
           <!-- /MOVR price ticker -->
+          <!-- SAMA price ticker -->
+          <div class="ml-3 relative">
+            <div class="flex">
+              <span
+                class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium mr-2" id="samaPrice"
+                x-init="
+                  url = 'https://graph.khaos.exchange/subgraphs/name/exosama-dex'
+                  headers = {
+                    'Accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,it;q=0.6',
+                    'Connection': 'keep-alive',
+                    'Origin': 'https://analytics.khaos.exchange',
+                    'Referer': 'https://analytics.khaos.exchange/',
+                    'Sec-Fetch-Dest': 'empty',
+                    'Sec-Fetch-Mode': 'cors',
+                    'Sec-Fetch-Site': 'same-site',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+                    'accept': '*/*',
+                    'content-type': 'application/json',
+                    'sec-ch-ua-mobile': '?0',
+                  };
+                  vars = {t0: '0x765277eebeca2e31912c9946eae1021199b39c61', t1: '0x8c992cba48189a79204223d106fcb1d797a5f87a'}
+                  samapricequery = `query MyQuery($t0: String!, $t1: String!) {
+                    tokens {
+                      pairQuote(
+                        where: {token0: $t0, token1: $t1}
+                      ) {
+                        token0 {
+                          id
+                          symbol
+                        }
+                        token1 {
+                          id
+                          symbol
+                        }
+                        token0Price
+                        token1Price
+                      }
+                    }
+                  }`;
+                  response = await fetch(url, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({
+                      query: samapricequery,
+                      variables: vars
+                    }),
+                    mode: 'cors',
+                  })           
+                  jsondata = await response.json()
+                  data = jsondata.data.tokens.find((value) => { return (value.pairQuote.length != 0) });
+                  samaPrice = parseFloat(data.pairQuote[0].token0Price).toFixed(3)
+                "
+                x-text="`$${samaPrice}`"
+              >
+                
+              </span>
+              <span class="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" aria-expanded="false" aria-haspopup="true">
+                <img class="h-8 w-8 rounded-full" src="/static/img/sama.png" alt="Exosama logo">
+              </span>
+            </div>
+          </div>
+          <!-- /SAMA price ticker -->
 
         </div>
       </div>
@@ -127,6 +188,13 @@
 
       <div class="footer-link">
         Made with ❤️ by <a href="https://twitter.com/merc1er" class="link" target="_blank">merc1er</a>
+      </div>
+      
+      <div class="mx-4 hidden sm:block">|</div>
+
+      <div class="footer-link">
+        Powered by <a href="https://app.khaos.exchange/" class="link" target="_blank">Khaos Exchange</a>
+        and <a href="https://www.dailysama.com/" class="link" target="_blank">DailySama</a>
       </div>
     </footer>
     {# /Footer #}
