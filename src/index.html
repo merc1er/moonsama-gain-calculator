@@ -58,9 +58,12 @@
                     if(window.getAllMaterialsPriceFailed){
                       materialsPriceProm = getAllMaterialsPrice()
                     }
+
                     const results = await Promise.all([getPlayerResults(), materialsPriceProm])
                     this.resources = results[0]
                     this.prices = results[1]
+                    console.log(this.prices)
+
                     this.total = getTotal(this.resources, this.prices, this.selectedDate, this?.movrPrice ?? 0, this?.samaPrice ?? 0)
 
                     if(this.resources.error){
@@ -195,22 +198,33 @@
 
                     </div>
                     <div class="flex-1 text-right">
-                      <div class="font-bold">Buy</div>
+                      <div class="font-bold ">Buy</div>
                       <template x-for="(resource, index) in getValidResources(resources)" :key="resource">
-                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 flex-1 text-right" x-text="getPrice(resource, prices, this.selectedDate) ? parseFloat(getPrice(resource, prices, this.selectedDate).highestBuy).toFixed(3) : '-'"></div>
+                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 flex-1 text-right" x-text="getPrice(resource, prices, selectedDate) ? parseFloat(getPrice(resource, prices, selectedDate).highestBuy).toFixed(3) : '-'"></div>
                       </template>
                       <div class="font-mono pl-2 ml-1 flex-1 text-right border-t-2" x-text="total.totalBuyMovr"></div>
                       <div class="font-mono pl-2 flex-1 text-right" x-text="total.totalBuySama"></div>                
                       <div class="font-mono pl-2 flex-1 text-right" x-text="`$${numberWithCommas(total.totalBuyUsd)}`"></div>                
                     </div>
+
                     <div class="flex-1 text-right">
                       <div class="font-bold pr-1">Sell</div>
                       <template x-for="(resource, index) in getValidResources(resources)" :key="resource">
-                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 pr-1 flex-1 text-right" x-text="getPrice(resource, prices, this.selectedDate) ? parseFloat(getPrice(resource, prices, this.selectedDate).lowestSell).toFixed(3) : '-'"></div>
+                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 pr-1 flex-1 text-right" x-text="getPrice(resource, prices, selectedDate) ? parseFloat(getPrice(resource, prices, selectedDate).lowestSell).toFixed(3) : '-'"></div>
                       </template>
                       <div class="font-mono pl-2 pr-1 flex-1 text-right border-t-2" x-text="total.totalSellMovr"></div>
                       <div class="font-mono pl-2 pr-1 flex-1 text-right" x-text="total.totalSellSama"></div>                
                       <div class="font-mono pl-2 pr-1 flex-1 text-right" x-text="`$${numberWithCommas(total.totalSellUsd)}`"></div>                
+                    </div>
+                    
+                    <div class="flex-1 text-right">
+                      <div class="font-bold pr-1">KhaosDex</div>
+                      <template x-for="(resource, index) in getValidResources(resources)" :key="resource">
+                        <div :class="{'bg-gray-800': getValidResources(resources).indexOf(resource) % 2}" class="font-mono pl-2 pr-1 flex-1 text-right" x-text="getPrice(resource, prices, selectedDate) ? parseFloat(getPrice(resource, prices, selectedDate).priceOfRssKhaos).toFixed(3) : '-'"></div>
+                      </template>
+                      <div class="font-mono pl-2 pr-1 flex-1 text-right border-t-2" x-text="total.totalSellMovr"></div>
+                      <div class="font-mono pl-2 pr-1 flex-1 text-right" x-text="total.totalSellKhaosSama"></div>                
+                      <div class="font-mono pl-2 pr-1 flex-1 text-right" x-text="`$${numberWithCommas(total.totalSellKhaosSamaUsd)}`"></div>                
                     </div>
                   </div>
 
