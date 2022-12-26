@@ -36,15 +36,15 @@ const materials = [
  * @returns {Promise<MaterialResult[]>}
  */
 async function getAllMaterialsPrice(){
-  let results = await Promise.all(materials.map(async ({chainId, name, tokenId, assetAddress}) => {
+  let results = await Promise.all(materials.map(async ({chainId, name, tokenId, assetAddress, erc20Address}) => {
     let result
     if(chainId === 1285){
       result = await getMaterialMovr(assetAddress, tokenId)
     }else if(chainId === 2109){
-      result = await getMaterialSama(assetAddress, tokenId)
+      result = await getMaterialSama(assetAddress, tokenId, erc20Address)
     }
     if(!!result){
-      return {chainId, name, tokenId, lowestSell: result.lowestSell, highestBuy: result.highestBuy }
+      return {chainId, name, tokenId, lowestSell: result.lowestSell, highestBuy: result.highestBuy, priceOfRssKhaos: result.priceOfRssKhaos }
     }
   }))
 
@@ -113,7 +113,8 @@ async function getMaterialMovr(assetAddress, tokenId){
  * @param {number} tokenId
  * @returns {Promise<{lowestSell: number, highestBuy: number}>}
  */
-async function getMaterialSama(assetAddress, tokenId){
+async function getMaterialSama(assetAddress, tokenId, erc20Address){
+  /** Get price of resource from Moonsama Marketplace */
   const graphqlQuery =
 `query getAssetOrders {
   sells: orders(where: {active: true, sellAsset: "${assetAddress}-${tokenId}", onlyTo: "0x0000000000000000000000000000000000000000"}, orderBy: pricePerUnit, orderDirection: asc, skip: 0, first: 1) {
@@ -131,7 +132,6 @@ async function getMaterialSama(assetAddress, tokenId){
     askPerUnitDenominator
   }
 }`
-
   const fetchUrl = "https://exosama-subgraph.moonsama.com/subgraphs/name/moonsama/marketplacev8"
   const response = await fetch(fetchUrl, {
     method: 'POST',
@@ -148,36 +148,27 @@ async function getMaterialSama(assetAddress, tokenId){
   const responseJson = await response.json()
   const buys = responseJson.data.buys.map(buy => buy.askPerUnitDenominator/buy.askPerUnitNominator).sort((a, b) => a-b)
   const sells = responseJson.data.sells.map(sell => sell.askPerUnitNominator/sell.askPerUnitDenominator).sort((a, b) => a-b)
-
   let lowestSell = sells.shift()
   let highestBuy = buys.pop()
-
   if(isNaN(lowestSell)){
     lowestSell = 0
   }
   if(isNaN(highestBuy)){
     highestBuy = 0
   }
-  return {lowestSell, highestBuy}
+
+  /** Get price of resource from Khaos Dex */
+  const priceOfRssKhaosResponse = await fetch(`https://moonsama-serverside-priceticker.vercel.app/api/getpriceofrssinsama/${erc20Address}`, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+    },
+    redirect: 'follow'
+  })
+  const priceOfRssKhaosJsonResponse = await priceOfRssKhaosResponse.json();
+  const priceOfRssKhaos = priceOfRssKhaosJsonResponse.price; 
+  return {lowestSell, highestBuy, priceOfRssKhaos}
 }
-
-
-/**
- * Returns prices for bRSS on Khaos DEX
- */ 
-
-function getPriceOfRssKhaosDex(resource) {
-
-}
-
-/**
- * Determines whether a resource is a beta resource or not
- * @returns a boolean that indicates if a resource is a beta resource (true) or not (false)
-*/
-function isBetaResource(resource) {
-  
-}
-
 
 /**
  * Returns the total USD value of all resources
@@ -195,6 +186,8 @@ function getTotal(resources, prices, gameDate, movrPrice, samaPrice){
 
   let totalBuySama = 0
   let totalSellSama = 0
+
+  let totalSellKhaosSama = 0; 
 
   for(const {chainId, tokenId, name} of materials){
     if(resources.hasOwnProperty(name) && !isNaN(parseFloat(resources[name]))){
@@ -218,6 +211,7 @@ function getTotal(resources, prices, gameDate, movrPrice, samaPrice){
         if(!!matchingPrice){
           totalBuySama+= resources[name] * matchingPrice.highestBuy
           totalSellSama+= resources[name] * matchingPrice.lowestSell
+          totalSellKhaosSama+= resources[name] * matchingPrice.priceOfRssKhaos
         }
       }
     }
@@ -225,7 +219,9 @@ function getTotal(resources, prices, gameDate, movrPrice, samaPrice){
 
   const totalBuyUsd = totalBuyMovr * movrPrice + totalBuySama * samaPrice
   const totalSellUsd = totalSellMovr * movrPrice + totalSellSama * samaPrice
-  return {totalBuyMovr: totalBuyMovr.toFixed(3), totalBuySama: totalBuySama.toFixed(3), totalBuyUsd: totalBuyUsd.toFixed(2), totalSellMovr: totalSellMovr.toFixed(3), totalSellSama: totalSellSama.toFixed(3), totalSellUsd: totalSellUsd.toFixed(2)}
+  const totalSellKhaosSamaUsd = totalSellKhaosSama * samaPrice + totalBuyMovr * movrPrice
+  return {totalBuyMovr: totalBuyMovr.toFixed(3), totalBuySama: totalBuySama.toFixed(3), totalBuyUsd: totalBuyUsd.toFixed(2), totalSellMovr: totalSellMovr.toFixed(3), totalSellSama: totalSellSama.toFixed(3), totalSellUsd: totalSellUsd.toFixed(2),
+  totalSellKhaosSama: totalSellKhaosSama.toFixed(3), totalSellKhaosSamaUsd: totalSellKhaosSamaUsd.toFixed(2)}
 }
 
 
@@ -245,7 +241,7 @@ function getPrice(resource, prices, gameDate){
     matchingPrice = prices.find(p=> p.name === resource)
   }
   if(!!matchingPrice){
-    return {lowestSell: matchingPrice.lowestSell, highestBuy: matchingPrice.highestBuy}
+    return {lowestSell: matchingPrice.lowestSell, highestBuy: matchingPrice.highestBuy, priceOfRssKhaos: matchingPrice.priceOfRssKhaos}
   }
 }
 
@@ -282,6 +278,10 @@ function prettifyResource(resource){
 
   if(res === "fish_specimen"){
     res = "fish"
+  }
+
+  if(res === "blood_crystals"){
+    res = "blood"
   }
 
   return res.trim().toLowerCase().replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))
@@ -338,7 +338,8 @@ window.getAllMaterialsPrice = getAllMaterialsPrice
 //load material quote on page load
 window.getAllMaterialsPriceFailed = false 
 const getAllMaterialsPricePromise = getAllMaterialsPrice()
-getAllMaterialsPricePromise.catch(()=>{
+getAllMaterialsPricePromise.catch((e)=>{
+  console.log(e)
   window.getAllMaterialsPricePromise = true
 })
 window.getAllMaterialsPricePromise = getAllMaterialsPricePromise
